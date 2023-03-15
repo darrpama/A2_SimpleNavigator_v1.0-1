@@ -76,7 +76,7 @@ So is it possible to traverse the Königsberg bridges by crossing each of these 
 We can paraphrase the author's words and formulate the following rules:
 1) The number of odd vertices (vertices to which an odd number of edges lead) of a graph must be even.
 There cannot be a graph that has an odd number of odd vertices.
-2) If all vertices of a graph are even (vertices that are led to by an odd number of edges), you can draw the graph without taking your pencil off the paper, and you can start from any vertex of the graph and end it at the same vertex.
+2) If all vertices of a graph are even (vertices that are led to by an even number of edges), you can draw the graph without taking your pencil off the paper, and you can start from any vertex of the graph and end it at the same vertex.
 3) A graph with more than two odd vertices cannot be drawn with a single stroke.
 
 The Königsberg bridge graph had four odd vertices, hence, it is impossible to traverse all the bridges without passing over any of them twice.
@@ -188,8 +188,8 @@ Implementation of the _s21_graph.h_  library:
 * The program must be built with Makefile which contains standard set of targets for GNU-programs: _all, clean, test, s21_graph.a_
 *Prepare full coverage of the `Graph` class methods with unit-tests
 * The class `Graph` must contain at least the following public methods:
-    + `loadGraphFromFile(string filename)` - loading a graph from a file in the adjacency matrix format
-    + `exportGraphToDot(string filename)`- exporting a graph to a dot file (see materials)
+    + `LoadGraphFromFile(string filename)` - loading a graph from a file in the adjacency matrix format
+    + `ExportGraphToDot(string filename)`- exporting a graph to a dot file (see materials)
 
 Implementation of the _s21_graph_algorithms.h_ library:  
 * The library must be developed in C++ language of C++17 standard
@@ -199,31 +199,34 @@ Implementation of the _s21_graph_algorithms.h_ library:
 * Add to the Makefile _s21_graph_algorithms.a_ target 
 *Prepare full coverage of the `GraphAlgorithms` class methods with unit-tests
 * The class ` GraphAlgorithms ` must contain at least the following public methods:
-    + `depthFirstSearch(Graph &graph, int startVertex)` - a *non-recursive* depth-first search in the graph from a given vertex. The function should return an array that contains the traversed vertices in the order they were traversed. When implementing this function, you must use the *self-written* data structure **stack**, which should be previously made as a separate static library
-    + `breadthFirstSearch(Graph &graph, int startVertex)` - breadth-first search in the graph from a given vertex. The function should return an array that contains the traversed vertices in the order they were traversed. When implementing this function, you must use the *self-written* data structure **queue**, which should be previously made as a separate static library
+    + `DepthFirstSearch(Graph &graph, int start_vertex)` - a *non-recursive* depth-first search in the graph from a given vertex. The function should return an array that contains the traversed vertices in the order they were traversed. When implementing this function, you must use the *self-written* data structure **stack**, which should be previously made as a separate static library
+    + `BreadthFirstSearch(Graph &graph, int start_vertex)` - breadth-first search in the graph from a given vertex. The function should return an array that contains the traversed vertices in the order they were traversed. When implementing this function, you must use the *self-written* data structure **queue**, which should be previously made as a separate static library
 * It is necessary to use *self-written* helper classes `Stack` and `Queue` (you can reuse your solution from the *CPP2* project for this). These classes must contain the following methods:
-    + `init()` - creating an empty stack/queue
+    + `stack()` - creating an empty stack
+    + `queue()` - creating an empty queue
     + `push(value)` - adding an element to the stack/queue
     + `pop()` - getting an element from the stack/queue followed by its removal from the stack/queue
-    + `peek()` - getting an element from the stack/queue without its removal from the stack/queue
+    + `top()` - getting an element from the stack without its removal from the stack
+    + `front()` - getting the first element from the queue without its removal from the queue
+    + `back()` - getting the last element from the queue without its removal from the queue
 
 *In this and the following tasks, consider that the vertex numbers start from 1*
 
 ## Part 2. Finding the shortest paths in a graph
 
 * Add two new methods to the `GraphAlgorithms` class:
-    + `getShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2)` - searching for the shortest path between two vertices in a graph using *Dijkstra's algorithm*. The function accepts as input the numbers of two vertices and returns a numerical result equal to the smallest distance between them
-    + `getShortestPathsBetweenAllVertices(Graph &graph)` - searching for the shortest paths between all pairs of vertices in a graph using the *Floyd-Warshall algorithm*. As a result, the function returns the matrix of the shortest paths between all vertices of the graph
+    + `GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2)` - searching for the shortest path between two vertices in a graph using *Dijkstra's algorithm*. The function accepts as input the numbers of two vertices and returns a numerical result equal to the smallest distance between them
+    + `GetShortestPathsBetweenAllVertices(Graph &graph)` - searching for the shortest paths between all pairs of vertices in a graph using the *Floyd-Warshall algorithm*. As a result, the function returns the matrix of the shortest paths between all vertices of the graph
 
 ## Part 3. Finding the minimum spanning tree
 
 * Add a new method to the `GraphAlgorithms` class:
-    + `getLeastSpanningTree(Graph &graph)` - searching for the minimal spanning tree in a graph using *Prim's algorithm*. As a result, the function should return the adjacency matrix for the minimal spanning tree
+    + `GetLeastSpanningTree(Graph &graph)` - searching for the minimal spanning tree in a graph using *Prim's algorithm*. As a result, the function should return the adjacency matrix for the minimal spanning tree
 
 ## Part 4. Travelling salesman problem
 
 * Add a new method to the `GraphAlgorithms` class:
-    + `solveTravelingSalesmanProblem(Graph &graph)` - solving the traveling salesman's problem using the *ant colony algorithm*.
+    + `SolveTravelingSalesmanProblem(Graph &graph)` - solving the traveling salesman's problem using the *ant colony algorithm*.
 You need to find the shortest path that goes through all vertices of the graph at least once, followed by a return to the original vertex. As a result, the function should return the `TsmResult` structure described below:
     ```cpp
     struct TsmResult {
