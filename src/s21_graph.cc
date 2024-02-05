@@ -21,7 +21,7 @@ namespace s21 {
         }
     }
 
-    void Graph::ExportGraphToDot(const std::string &filename) {
+    void Graph::ExportGraphToDot(const std::string &filename) const {
         std::stringstream ss;
         ss << "digraph G {\n";
         for (int i = 0; i < size_; ++i) {
@@ -35,5 +35,27 @@ namespace s21 {
 
         std::ofstream file(filename);
         file << ss.str();
+    }
+
+    std::vector<int> Graph::getNeighbors(const int vertex) const {
+        if (size_ == 0) return {};
+
+        if (vertex < 0 || vertex >= size_) {
+            throw std::invalid_argument("Graph::getNeighbors(): Invalid vertex");
+        }
+
+        std::vector<int> neighbors;
+        for (int i = 0; i < size_; ++i) {
+            if (adj_matrix_[vertex][i] >= 1) {
+                neighbors.push_back(i);
+            }
+        }
+
+        return neighbors;
+    }
+
+    size_t Graph::size() const
+    {
+        return size_;
     }
 }

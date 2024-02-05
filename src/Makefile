@@ -1,16 +1,22 @@
 PROJECTDIR = $(CURDIR)
-STATICLIB = s21_graph.a
-
+GRAPH_STATICLIB = s21_graph.a
 GRAPH_SOURCES = $(PROJECTDIR)/s21_graph.cc
 GRAPH_OBJECTS = $(GRAPH_SOURCES:.cc=.o)
 
-build: $(STATICLIB)
-	g++ main.cc $(STATICLIB)
+GRAPH_ALG_STATICLIB = s21_graph_algorithms.a
+GRAPH_ALG_SOURCES = $(PROJECTDIR)/s21_graph_algorithms.cc
+GRAPH_ALG_OBJECTS = $(GRAPH_ALG_SOURCES:.cc=.o)
+
+build: $(GRAPH_ALG_STATICLIB)
+	g++ main.cc $(GRAPH_ALG_STATICLIB)
 	./a.exe
 
 %.o: %.cc
 	g++ -o $@ -c $<
 
-$(STATICLIB): $(GRAPH_OBJECTS)
-	ar rcs $(STATICLIB) $^
-	rm -rf *.o
+$(GRAPH_STATICLIB): $(GRAPH_OBJECTS)
+	ar rcs $(GRAPH_STATICLIB) $^
+
+
+$(GRAPH_ALG_STATICLIB): $(GRAPH_ALG_OBJECTS) $(GRAPH_STATICLIB)
+	ar rcs $(GRAPH_ALG_STATICLIB) $^

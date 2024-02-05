@@ -1,11 +1,12 @@
 #include <iostream>
 #include <iomanip>
 #include "s21_graph.h"
+#include "s21_graph_algorithms.h"
 
 int main(int argc, char const *argv[]) {
     s21::Graph graph;
 
-    graph.LoadGraphFromFile("./graph.txt");
+    graph.LoadGraphFromFile("./bfs-graph.txt");
     std::cout << "loaded\n";
 
     std::cout << "    ";
@@ -22,5 +23,12 @@ int main(int argc, char const *argv[]) {
         std::cout << "\n";
     }
 
-    graph.ExportGraphToDot("dot.dt"); 
+    // graph.ExportGraphToDot("dot.dt");
+
+    // auto result = s21::GraphAlgorithms::DepthFirstSearch(graph, 1);
+    auto result = s21::GraphAlgorithms::BreadthFirstSearch(graph, 1);
+    std::cout << "DepthFirstSearch result:\n\t";
+    for (auto i : result) {
+        std::cout << i << " ";
+    }
 }
