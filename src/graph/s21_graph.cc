@@ -38,29 +38,27 @@ namespace s21 {
     }
 
     int Graph::getEdgeCost(const int from, const int to) const {
-        return adj_matrix_[from][to];
+        return adj_matrix_[from - 1][to - 1];
     }
 
-    std::vector<int> Graph::getNeighbors(const int vertex) const
-    {
+    std::vector<int> Graph::getNeighbors(const int vertex) const {
         if (size_ == 0) return {};
 
-        if (vertex < 0 || vertex >= size_) {
+        if (vertex < 1 || vertex > size_) {
             throw std::invalid_argument("Graph::getNeighbors(): Invalid vertex");
         }
 
         std::vector<int> neighbors;
         for (int i = 0; i < size_; ++i) {
-            if (adj_matrix_[vertex][i] >= 1) {
-                neighbors.push_back(i);
+            if (adj_matrix_[vertex - 1][i] >= 1) {
+                neighbors.push_back(i + 1);
             }
         }
 
         return neighbors;
     }
 
-    size_t Graph::size() const
-    {
+    size_t Graph::size() const {
         return size_;
     }
 }

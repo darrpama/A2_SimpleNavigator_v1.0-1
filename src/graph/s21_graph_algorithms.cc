@@ -20,19 +20,19 @@ namespace s21 {
         std::vector<bool> visited(graph.size(), false);
 
         std::stack<int> stack;
-        stack.push(start_vertex - 1);
+        stack.push(start_vertex);
         
         while (!stack.empty()) {
-            int top = stack.top();
+            int top = stack.top() - 1;
             stack.pop();
 
             if (!visited[top]) {
                 result.push_back(top + 1);
                 visited[top] = true;
                 
-                auto nb = graph.getNeighbors(top);
+                auto nb = graph.getNeighbors(top + 1);
                 for (int i = static_cast<int>(nb.size()) - 1; i >= 0; i--) {
-                    if (!visited[nb[i]])
+                    if (!visited[nb[i] - 1])
                         stack.push(nb[i]);
                 }
             }
@@ -53,22 +53,22 @@ namespace s21 {
         std::vector<bool> visited(graph.size(), false);
 
         std::queue<int> queue;
-        queue.push(start_vertex - 1);
+        queue.push(start_vertex);
         result.push_back(start_vertex);
 
         while (!queue.empty()) {
-            int front = queue.front();
+            int front = queue.front() - 1;
             queue.pop();
 
             visited[front] = true;
-            auto nb = graph.getNeighbors(front);
+            auto nb = graph.getNeighbors(front + 1);
 
             for (int i = 0; i < static_cast<int>(nb.size()); i++) {
-                if (!visited[nb[i]]) {
+                if (!visited[nb[i] - 1]) {
                     queue.push(nb[i]);
-                    visited[nb[i]] = true;
+                    visited[nb[i] - 1] = true;
 
-                    result.push_back(nb[i] + 1);
+                    result.push_back(nb[i]);
                 }
             }
         }
@@ -91,21 +91,21 @@ namespace s21 {
         dist[vertex1 - 1] = 0;
 
         std::queue<int> queue;
-        queue.push(vertex1 - 1);
+        queue.push(vertex1);
         
         while (!queue.empty()) {
-            int front = queue.front();
+            int front = queue.front() - 1;
             queue.pop();
 
             visited[front] = true;
-            auto nb = graph.getNeighbors(front);
+            auto nb = graph.getNeighbors(front + 1);
 
             for (int i = 0; i < static_cast<int>(nb.size()); i++) {
-                if (!visited[nb[i]]) {
+                if (!visited[nb[i] - 1]) {
                     queue.push(nb[i]);
-                    visited[nb[i]] = true;
+                    visited[nb[i] - 1] = true;
                 }
-                dist[nb[i]] = std::min(dist[front] + graph.getEdgeCost(front, nb[i]), dist[nb[i]]);
+                dist[nb[i] - 1] = std::min(dist[front] + graph.getEdgeCost(front + 1, nb[i]), dist[nb[i] - 1]);
             }
         }
 
