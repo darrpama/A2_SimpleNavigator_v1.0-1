@@ -8,7 +8,7 @@ GRAPH_ALG_SOURCES = $(PROJECTDIR)/s21_graph_algorithms.cc
 GRAPH_ALG_OBJECTS = $(GRAPH_ALG_SOURCES:.cc=.o)
 
 build: $(GRAPH_ALG_STATICLIB)
-	g++ main.cc $(GRAPH_ALG_STATICLIB)
+	g++ main.cc $(GRAPH_ALG_STATICLIB) $(GRAPH_STATICLIB)
 	./a.exe
 
 %.o: %.cc
@@ -20,3 +20,6 @@ $(GRAPH_STATICLIB): $(GRAPH_OBJECTS)
 
 $(GRAPH_ALG_STATICLIB): $(GRAPH_ALG_OBJECTS) $(GRAPH_STATICLIB)
 	ar rcs $(GRAPH_ALG_STATICLIB) $^
+
+clean:
+	rm -rf *.o *.a

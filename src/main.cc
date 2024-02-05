@@ -6,7 +6,7 @@
 int main(int argc, char const *argv[]) {
     s21::Graph graph;
 
-    graph.LoadGraphFromFile("./bfs-graph.txt");
+    graph.LoadGraphFromFile("./assets/dijkstra.txt");
     std::cout << "loaded\n";
 
     std::cout << "    ";
@@ -26,9 +26,12 @@ int main(int argc, char const *argv[]) {
     // graph.ExportGraphToDot("dot.dt");
 
     // auto result = s21::GraphAlgorithms::DepthFirstSearch(graph, 1);
-    auto result = s21::GraphAlgorithms::BreadthFirstSearch(graph, 1);
-    std::cout << "DepthFirstSearch result:\n\t";
-    for (auto i : result) {
-        std::cout << i << " ";
-    }
+    // auto result = s21::GraphAlgorithms::BreadthFirstSearch(graph, 1);
+    // std::cout << "DepthFirstSearch result:\n\t";
+    // for (auto i : result) {
+    //     std::cout << i << " ";
+    // }
+    
+    int cost = s21::GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 6);
+    std::cout << "cost: " << cost << "\n";
 }

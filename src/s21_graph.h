@@ -10,6 +10,7 @@ namespace s21 {
         void LoadGraphFromFile(const std::string& filename);
         void ExportGraphToDot(const std::string& filename) const;
 
+        int getEdgeCost(const int from, const int to) const;
         std::vector<int> getNeighbors(const int vertex) const;
         size_t size() const;
     //    private:

@@ -37,7 +37,12 @@ namespace s21 {
         file << ss.str();
     }
 
-    std::vector<int> Graph::getNeighbors(const int vertex) const {
+    int Graph::getEdgeCost(const int from, const int to) const {
+        return adj_matrix_[from][to];
+    }
+
+    std::vector<int> Graph::getNeighbors(const int vertex) const
+    {
         if (size_ == 0) return {};
 
         if (vertex < 0 || vertex >= size_) {
