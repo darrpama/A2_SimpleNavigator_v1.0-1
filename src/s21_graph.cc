@@ -1,5 +1,6 @@
 #include "s21_graph.h"
 #include <fstream>
+#include <sstream>
 #include <iostream>
 
 namespace s21 {
@@ -11,25 +12,28 @@ namespace s21 {
         }
 
         file >> size_;
-        nodes_.resize(size_);
-        
-        for (int i = 0; i < size_; i++) {
-            nodes_[i] = new GraphNode();
-        }
+        adj_matrix_ = std::vector<std::vector<int>>(size_, std::vector<int>(size_, 0));
 
-        for (int i = 0; i < size_; i++) {
-            for (int j = 0; j < size_; j++) {
-                int cost;
-                file >> cost;
-                if (cost == 0) continue;
-
-                nodes_[i]->neighbors.insert(nodes_[j]);
-                nodes_[i]->neighbors_values.emplace(nodes_[j], cost);
+        for (int i = 0; i < size_; ++i) {
+            for (int j = 0; j < size_; ++j) {
+                file >> adj_matrix_[i][j];
             }
         }
     }
 
     void Graph::ExportGraphToDot(const std::string &filename) {
-        
+        std::stringstream ss;
+        ss << "digraph G {\n";
+        for (int i = 0; i < size_; ++i) {
+            for (int j = 0; j < size_; ++j) {
+                if (adj_matrix_[i][j] >= 1) {
+                    ss << "\t" << i << " -> " << j << ";\n";
+                }
+            }
+        }
+        ss << "}\n";
+
+        std::ofstream file(filename);
+        file << ss.str();
     }
 }

@@ -2,7 +2,7 @@
 #define _GRAPH_H_
 
 #include <string>
-#include "s21_graph_node.h"
+#include <vector>
 
 namespace s21 {
     class Graph {
@@ -11,7 +11,7 @@ namespace s21 {
         void ExportGraphToDot(const std::string& filename);
        
     //    private:
-        std::vector<GraphNode*> nodes_;
+        std::vector<std::vector<int>> adj_matrix_;
         size_t size_;
     };
 }

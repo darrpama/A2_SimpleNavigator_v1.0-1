@@ -8,11 +8,19 @@ int main(int argc, char const *argv[]) {
     graph.LoadGraphFromFile("./graph.txt");
     std::cout << "loaded\n";
 
-    for (size_t i = 0; i < graph.nodes_.size(); i++) {
-        std::cout << "Node " << std::setw(2) << i << ":";
-        for (auto& neighbs : graph.nodes_[i]->neighbors) {
-            std::cout << std::setw(3) << graph.nodes_[i]->neighbors_values[neighbs] << " ";
+    std::cout << "    ";
+    for (size_t i = 0; i < graph.adj_matrix_.size(); i++) {
+        std::cout << std::setw(3) << i + 1 << " ";
+    }
+    std::cout << "\n";
+
+    for (size_t i = 0; i < graph.adj_matrix_.size(); i++) {
+            std::cout << std::setw(3) << i + 1 << ":";
+        for (size_t j = 0; j < graph.adj_matrix_[i].size(); j++) {
+            std::cout << std::setw(3) << graph.adj_matrix_[i][j] << " ";
         }
         std::cout << "\n";
     }
+
+    graph.ExportGraphToDot("dot.dt"); 
 }
