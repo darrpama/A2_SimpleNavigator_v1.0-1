@@ -124,7 +124,7 @@ namespace s21 {
         }
 
         for (size_t v = 0; v < graph.size(); v++) {
-            dist[v][v] = 0;
+            dist[v][v] = graph.getEdgeCost(v + 1, v + 1);
         }
 
         for (size_t k = 0; k < graph.size(); k++) {
