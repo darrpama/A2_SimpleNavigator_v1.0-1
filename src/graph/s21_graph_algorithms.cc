@@ -137,4 +137,37 @@ namespace s21 {
 
         return dist;
     }
+    
+    std::vector<std::vector<int>> GraphAlgorithms::GetLeastSpanningTree(const Graph &graph) {
+        // std::vector<int> parent(graph.size(), -1);
+        // std::vector<int> cheapest(graph.size(), 1e9);
+
+        std::vector<std::vector<int>> forest(graph.size(), std::vector<int>(graph.size(), 0));
+        std::vector<bool> visited(graph.size(), false);
+        visited[0] = true;
+
+        for (size_t k = 0; k < graph.size() - 1; k++) {
+            int from = 0, to = 0, min = 1e9;
+            for (size_t i = 0; i < graph.size(); i++) {
+                if (visited[i]) {
+                    auto nb = graph.getNeighbors(i + 1);
+                    int min_cost = 0;
+
+                    for (int j : nb) {
+                        if (!visited[j - 1] && min_cost < min) {
+                            min = min_cost;
+                            from = i;
+                            to = j - 1;
+                        }
+                    }
+                }
+            }
+
+            visited[to] = true;
+            forest[from][to] = graph.getEdgeCost(from + 1, to + 1);
+            forest[to][from] = forest[from][to];
+        }
+        
+        return forest;
+    }
 } // namespace s21
