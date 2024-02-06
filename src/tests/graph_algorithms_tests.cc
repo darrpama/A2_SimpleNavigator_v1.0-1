@@ -33,3 +33,16 @@ TEST(GraphAlgorithms, GetShortestPathBetweenVertices_Dijkstra) {
     int dijkstra_result = s21::GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 5);
     EXPECT_EQ(dijkstra_result, 20);
 }
+
+TEST(GraphAlgorithms, GetShortestPathsBetweenAllVertices_FloydWarshall) {
+    std::string test_graph_path = (std::filesystem::current_path() / "assets" / "floyd-warshall.txt").string();
+
+    s21::Graph graph;
+    graph.LoadGraphFromFile(test_graph_path);
+
+    auto result = s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph);
+    EXPECT_TRUE((result[0] == std::vector<int>{ 0, -1, -2, 0}));
+    EXPECT_TRUE((result[1] == std::vector<int>{ 4,  0,  2, 4}));
+    EXPECT_TRUE((result[2] == std::vector<int>{ 5,  1,  0, 2}));
+    EXPECT_TRUE((result[3] == std::vector<int>{ 3, -1,  1, 0}));
+}

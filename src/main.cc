@@ -1,24 +1,24 @@
 #include <iostream>
 #include <iomanip>
-#include "s21_graph.h"
-#include "s21_graph_algorithms.h"
+#include "graph/s21_graph.h"
+#include "graph/s21_graph_algorithms.h"
 
 int main(int argc, char const *argv[]) {
     s21::Graph graph;
 
-    graph.LoadGraphFromFile("./assets/dijkstra.txt");
+    graph.LoadGraphFromFile("./assets/floyd-warshall.txt");
     std::cout << "loaded\n";
 
     std::cout << "    ";
-    for (size_t i = 0; i < graph.adj_matrix_.size(); i++) {
+    for (size_t i = 0; i < graph.size(); i++) {
         std::cout << std::setw(3) << i + 1 << " ";
     }
     std::cout << "\n";
 
-    for (size_t i = 0; i < graph.adj_matrix_.size(); i++) {
-            std::cout << std::setw(3) << i + 1 << ":";
-        for (size_t j = 0; j < graph.adj_matrix_[i].size(); j++) {
-            std::cout << std::setw(3) << graph.adj_matrix_[i][j] << " ";
+    for (size_t i = 0; i < graph.size(); i++) {
+        std::cout << std::setw(3) << i + 1 << ":";
+        for (size_t j = 0; j < graph.size(); j++) {
+            std::cout << std::setw(3) << graph.getEdgeCost(i + 1, j + 1) << " ";
         }
         std::cout << "\n";
     }
@@ -31,7 +31,17 @@ int main(int argc, char const *argv[]) {
     // for (auto i : result) {
     //     std::cout << i << " ";
     // }
-    
-    int cost = s21::GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 6);
-    std::cout << "cost: " << cost << "\n";
+
+    // int cost = s21::GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 6);
+    // std::cout << "cost: " << cost << "\n";
+
+    auto res = s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph);
+    // std::cout << "FloydWarshall result:\n";
+    // for (auto i : res) {
+    //     for (auto j : i) {
+    //         std::cout << std::setw(3) << j << " ";
+    //     }
+    //     std::cout << "\n";
+    // }
+    // std::cout << "\n";
 }

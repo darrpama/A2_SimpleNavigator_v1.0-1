@@ -6,6 +6,7 @@
 #include <queue> // replace
 
 #include <iostream>
+#include <iomanip>
 
 namespace s21 {
     std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph &graph, int start_vertex) {
@@ -110,5 +111,30 @@ namespace s21 {
         }
 
         return dist[vertex2 - 1];
+    }
+    
+    std::vector<std::vector<int>> GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph &graph) {
+        std::vector<std::vector<int>> dist(graph.size(), std::vector<int>(graph.size(), 0));
+
+        for (size_t u = 0; u < graph.size(); u++) {
+            for (size_t v = 0; v < graph.size(); v++) {
+                int cost = graph.getEdgeCost(u + 1, v + 1);
+                dist[u][v] = cost == 0 ? 1e9 : cost;
+            }
+        }
+
+        for (size_t v = 0; v < graph.size(); v++) {
+            dist[v][v] = 0;
+        }
+
+        for (size_t k = 0; k < graph.size(); k++) {
+            for (size_t i = 0; i < graph.size(); i++) {
+                for (size_t j = 0; j < graph.size(); j++) {
+                    dist[i][j] = std::min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
+
+        return dist;
     }
 } // namespace s21
