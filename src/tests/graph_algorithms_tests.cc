@@ -41,8 +41,26 @@ TEST(GraphAlgorithms, GetShortestPathsBetweenAllVertices_FloydWarshall) {
     graph.LoadGraphFromFile(test_graph_path);
 
     auto result = s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph);
+
+    EXPECT_EQ(result.size(), 4);
     EXPECT_TRUE((result[0] == std::vector<int>{ 0, -1, -2, 0}));
     EXPECT_TRUE((result[1] == std::vector<int>{ 4,  0,  2, 4}));
     EXPECT_TRUE((result[2] == std::vector<int>{ 5,  1,  0, 2}));
     EXPECT_TRUE((result[3] == std::vector<int>{ 3, -1,  1, 0}));
+}
+
+TEST(GraphAlgorithms, GetLeastSpanningTree_Prim) {
+    std::string test_graph_path = (std::filesystem::current_path() / "assets" / "prim.txt").string();
+
+    s21::Graph graph;
+    graph.LoadGraphFromFile(test_graph_path);
+
+    auto result = s21::GraphAlgorithms::GetLeastSpanningTree(graph);
+    
+    EXPECT_EQ(result.size(), 5);
+    EXPECT_TRUE((result[0] == std::vector<int>{ 0, 3, 4, 0, 1}));
+    EXPECT_TRUE((result[1] == std::vector<int>{ 3, 0, 0, 0, 0}));
+    EXPECT_TRUE((result[2] == std::vector<int>{ 4, 0, 0, 2, 0}));
+    EXPECT_TRUE((result[3] == std::vector<int>{ 0, 0, 2, 0, 0}));
+    EXPECT_TRUE((result[4] == std::vector<int>{ 1, 0, 0, 0, 0}));
 }

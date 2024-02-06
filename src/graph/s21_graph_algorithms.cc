@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <limits>
+#include <set>
 #include <stack> // replace
 #include <queue> // replace
 
@@ -139,35 +140,39 @@ namespace s21 {
     }
     
     std::vector<std::vector<int>> GraphAlgorithms::GetLeastSpanningTree(const Graph &graph) {
-        // std::vector<int> parent(graph.size(), -1);
-        // std::vector<int> cheapest(graph.size(), 1e9);
-
         std::vector<std::vector<int>> forest(graph.size(), std::vector<int>(graph.size(), 0));
-        std::vector<bool> visited(graph.size(), false);
-        visited[0] = true;
+        
+        std::vector<int> parent(graph.size(), -1);
+        std::vector<int> cheapest(graph.size(), 1e9);
+        cheapest[0] = 0;
 
-        for (size_t k = 0; k < graph.size() - 1; k++) {
-            int from = 0, to = 0, min = 1e9;
-            for (size_t i = 0; i < graph.size(); i++) {
-                if (visited[i]) {
-                    auto nb = graph.getNeighbors(i + 1);
-                    int min_cost = 0;
+        std::set<std::pair<int, int>> edges;
+        edges.insert({0, 0});
 
-                    for (int j : nb) {
-                        if (!visited[j - 1] && min_cost < min) {
-                            min = min_cost;
-                            from = i;
-                            to = j - 1;
-                        }
-                    }
-                }
+        for (size_t k = 0; k < graph.size(); k++) {
+            int cost = edges.begin()->first;
+            int v = edges.begin()->second;
+            edges.erase(edges.begin());
+
+            if (parent[v] != -1) {
+                forest[parent[v]][v] = cost;
+                forest[v][parent[v]] = cost;
             }
 
-            visited[to] = true;
-            forest[from][to] = graph.getEdgeCost(from + 1, to + 1);
-            forest[to][from] = forest[from][to];
+            auto nb = graph.getNeighbors(v + 1);
+            for (int i = 0; i < static_cast<int>(nb.size()); i++) {
+                int to = nb[i] - 1;
+                cost = graph.getEdgeCost(v + 1, to + 1);
+
+                if (cost < cheapest[to]) {
+                    edges.erase({cheapest[to], to});
+                    cheapest[to] = cost;
+                    parent[to] = v;
+                    edges.insert({cheapest[to], to});
+                }
+            }
         }
-        
+
         return forest;
     }
 } // namespace s21

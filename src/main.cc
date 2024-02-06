@@ -35,16 +35,6 @@ int main(int argc, char const *argv[]) {
     // int cost = s21::GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 6);
     // std::cout << "cost: " << cost << "\n";
 
-    // auto res = s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph);
-    // std::cout << "FloydWarshall result:\n";
-    // for (auto i : res) {
-    //     for (auto j : i) {
-    //         std::cout << std::setw(3) << j << " ";
-    //     }
-    //     std::cout << "\n";
-    // }
-    // std::cout << "\n";
-
     auto lst = s21::GraphAlgorithms::GetLeastSpanningTree(graph);
     std::cout << "LeastSpanningTree result:\n";
     for (auto i : lst) {
@@ -55,9 +45,4 @@ int main(int argc, char const *argv[]) {
     }
     std::cout << "\n";
 
-    // 0 3 4 0 1
-    // 3 0 0 0 0
-    // 4 0 0 2 0
-    // 0 0 2 0 0
-    // 1 0 0 0 0
 }
