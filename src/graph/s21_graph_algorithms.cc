@@ -6,6 +6,8 @@
 #include <stack> // replace
 #include <queue> // replace
 
+#include "TSM/AntColonyTSM.h"
+
 #include <iostream>
 #include <iomanip>
 
@@ -150,6 +152,9 @@ namespace s21 {
         edges.insert({0, 0});
 
         for (size_t k = 0; k < graph.size(); k++) {
+            if (edges.empty())
+                return {};
+
             int cost = edges.begin()->first;
             int v = edges.begin()->second;
             edges.erase(edges.begin());
@@ -174,5 +179,11 @@ namespace s21 {
         }
 
         return forest;
+    }
+    
+    TravelingSalesman::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(const Graph &graph) {
+        AntColonyTSM tsm;
+        
+        return tsm.solve(graph);
     }
 } // namespace s21

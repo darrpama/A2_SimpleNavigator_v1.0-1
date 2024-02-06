@@ -2,6 +2,7 @@
 #define _S21_GRAPH_ALGORITHMS_H_
 
 #include <vector>
+#include "TSM/TravelingSalesman.h"
 #include "s21_graph.h"
 
 namespace s21 {
@@ -14,6 +15,8 @@ namespace s21 {
         static std::vector<std::vector<int>> GetShortestPathsBetweenAllVertices(const Graph &graph);
         
         static std::vector<std::vector<int>> GetLeastSpanningTree(const Graph& graph);
+        
+        static TravelingSalesman::TsmResult SolveTravelingSalesmanProblem(const Graph &graph);
     };
 } // namespace s21
 
