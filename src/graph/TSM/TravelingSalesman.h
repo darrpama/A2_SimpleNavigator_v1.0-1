@@ -2,6 +2,7 @@
 #define _TRAVELINGSALESMAN_H_
 
 #include <vector>
+#include <limits>
 #include "../s21_graph.h"
 
 namespace s21 {
@@ -10,6 +11,11 @@ namespace s21 {
         struct TsmResult {
             std::vector<int> vertices;
             double distance;  
+
+            TsmResult() {
+                distance = std::numeric_limits<double>::max();
+                vertices.clear();
+            }
         };
 
         virtual TsmResult solve(const Graph& graph) = 0; 

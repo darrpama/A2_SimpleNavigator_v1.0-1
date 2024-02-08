@@ -37,6 +37,10 @@ namespace s21 {
         file << ss.str();
     }
 
+    bool Graph::IsWayExists(const int from, const int to) const {
+        return adj_matrix_[from - 1][to - 1] != 0;
+    }
+
     int Graph::getEdgeCost(const int from, const int to) const {
         return adj_matrix_[from - 1][to - 1];
     }

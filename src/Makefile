@@ -1,4 +1,4 @@
-CXX = g++ -std=c++17
+CXX = g++ -g -std=c++17
 CXXFLAGS = -Wall -Werror -Wextra
 PROJECTDIR = $(CURDIR)
 GRAPH_STATICLIB = s21_graph.a
@@ -6,7 +6,10 @@ GRAPH_SOURCES = $(PROJECTDIR)/graph/s21_graph.cc
 GRAPH_OBJECTS = $(GRAPH_SOURCES:.cc=.o)
 
 GRAPH_ALG_STATICLIB = s21_graph_algorithms.a
-GRAPH_ALG_SOURCES = $(PROJECTDIR)/graph/s21_graph_algorithms.cc
+GRAPH_ALG_SOURCES = \
+	$(PROJECTDIR)/graph/s21_graph_algorithms.cc \
+	$(PROJECTDIR)/graph/TSM/AntColonyTSM.cc \
+
 GRAPH_ALG_OBJECTS = $(GRAPH_ALG_SOURCES:.cc=.o)
 
 TEST_SOURCES = \
@@ -21,7 +24,7 @@ all: $(GRAPH_STATICLIB) $(GRAPH_ALG_STATICLIB) tests clean
 
 
 build: $(GRAPH_ALG_STATICLIB)
-	g++ main.cc $(GRAPH_ALG_STATICLIB) $(GRAPH_STATICLIB)
+	$(CXX) main.cc $(GRAPH_ALG_STATICLIB) $(GRAPH_STATICLIB)
 	./a.exe
 
 
@@ -43,5 +46,5 @@ clean:
 
 
 %.o: %.cc
-	g++ -o $@ -c $<
+	$(CXX) -o $@ -c $<
 

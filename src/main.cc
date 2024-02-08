@@ -6,7 +6,7 @@
 int main(int argc, char const *argv[]) {
     s21::Graph graph;
 
-    graph.LoadGraphFromFile("./assets/prim.txt");
+    graph.LoadGraphFromFile("./assets/graph.txt");
     std::cout << "loaded\n";
 
     std::cout << "    ";
@@ -35,14 +35,21 @@ int main(int argc, char const *argv[]) {
     // int cost = s21::GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 6);
     // std::cout << "cost: " << cost << "\n";
 
-    auto lst = s21::GraphAlgorithms::GetLeastSpanningTree(graph);
-    std::cout << "LeastSpanningTree result:\n";
-    for (auto i : lst) {
-        for (auto j : i) {
-            std::cout << std::setw(3) << j << " ";
-        }
-        std::cout << "\n";
+    // auto lst = s21::GraphAlgorithms::GetLeastSpanningTree(graph);
+    // std::cout << "LeastSpanningTree result:\n";
+    // for (auto i : lst) {
+    //     for (auto j : i) {
+    //         std::cout << std::setw(3) << j << " ";
+    //     }
+    //     std::cout << "\n";
+    // }
+    // std::cout << "\n";
+
+    s21::TravelingSalesman::TsmResult res = s21::GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
+    std::cout << "Tsm Distance: " << res.distance << "\n";
+    std::cout << "Tsm Path: ";
+    for (auto i : res.vertices) {
+        std::cout << i << " -> ";
     }
     std::cout << "\n";
-
 }
