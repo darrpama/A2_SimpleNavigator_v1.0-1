@@ -9,7 +9,6 @@ namespace s21 {
         initPheromones(graph, pheromones);
 
         TsmResult result;
-
         for (size_t i = 0; i < constant::ITERATIONS_COUNT; ++i) {
             evaporatePheromones(graph, pheromones);
             TsmResult tmp_res = runAnts(graph, pheromones);
@@ -93,8 +92,7 @@ namespace s21 {
 
         std::vector<double> probabilities(possible_ways.size(), 0);
         for (size_t i = 0; i < possible_ways.size(); ++i) {
-            probabilities[i] = 
-                               std::pow(pheromones[current_pos][possible_ways[i] - 1], constant::ALPHA) *
+            probabilities[i] = std::pow(pheromones[current_pos][possible_ways[i] - 1], constant::ALPHA) *
                                std::pow(1.0 / graph.getEdgeCost(current_pos + 1, possible_ways[i]), constant::BETA) /
                                sum;
         }
