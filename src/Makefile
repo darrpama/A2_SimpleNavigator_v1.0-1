@@ -23,9 +23,10 @@ TEST_EXE = GraphTests
 all: $(GRAPH_STATICLIB) $(GRAPH_ALG_STATICLIB) tests clean
 
 
-build: $(GRAPH_ALG_STATICLIB)
-	$(CXX) main.cc $(GRAPH_ALG_STATICLIB) $(GRAPH_STATICLIB)
-	./a.exe
+build:
+	mkdir -p build && cd build && cmake ../ -G "Unix Makefiles" && make
+
+	./SimpleNavigator.exe
 
 
 $(GRAPH_STATICLIB): $(GRAPH_OBJECTS)

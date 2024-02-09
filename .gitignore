@@ -52,3 +52,4 @@ dkms.conf
 
 .vscode
 *.dot
+*build*

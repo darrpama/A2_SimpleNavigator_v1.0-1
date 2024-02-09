@@ -22,12 +22,12 @@ namespace s21 {
     };
 
     namespace constant {
-        constexpr double ALPHA = 1.0;
-        constexpr double BETA = 1.0;
-        constexpr double EVAPORATION_COEF = 0.64;
-        constexpr double Q = 100.0;
-        constexpr double DEFAULT_PHEROMONE = 0.5;
-        constexpr size_t ITERATIONS_COUNT = 100;
+        constexpr double ALPHA = 0.7;
+        constexpr double BETA = 0.7;
+        constexpr double EVAPORATION_COEF = 0.8;
+        constexpr double Q = 1000.0;
+        constexpr double DEFAULT_PHEROMONE = 0.3;
+        constexpr size_t ITERATIONS_COUNT = 150;
     }
 } // namespace s21
 

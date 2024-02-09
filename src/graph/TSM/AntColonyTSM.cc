@@ -3,8 +3,6 @@
 #include <random>
 #include "AntColonyTSM.h"
 
-#include <iostream>
-
 namespace s21 {
     TravelingSalesman::TsmResult AntColonyTSM::solve(const Graph& graph) {
         Matrix pheromones(graph.size(), std::vector<double>(graph.size()));
@@ -19,7 +17,6 @@ namespace s21 {
             if (result.distance > tmp_res.distance) {
                 result = tmp_res;
             }
-            std::cout << "Finished iteration " << i << ": len: " << result.distance << " " << tmp_res.distance << std::endl;
         }
 
         return result;
@@ -45,8 +42,8 @@ namespace s21 {
 
     void AntColonyTSM::updatePheromones(const Graph &graph, Matrix &pheromones, const std::vector<int> &visited, double way_length) {
         for (size_t i = 0; i < visited.size() - 1; ++i) {
-            pheromones[visited[i] - 1][visited[i + 1] - 1] += constant::Q / way_length;
-            pheromones[visited[i + 1] - 1][visited[i] - 1] += constant::Q / way_length;
+            pheromones[visited[i] - 1][visited[i + 1] - 1] += constant::Q / graph.size() / way_length;
+            pheromones[visited[i + 1] - 1][visited[i] - 1] += constant::Q / graph.size() / way_length;
         }
     }
 
@@ -54,7 +51,7 @@ namespace s21 {
         TsmResult result;
 
         for (size_t ant = 0; ant < graph.size(); ++ant) {
-            size_t current_pos = ant;
+            size_t current_pos = 0;
             std::vector<int> visited;
             visited.push_back(current_pos + 1);
 
@@ -71,8 +68,8 @@ namespace s21 {
             }
 
             if (graph.IsWayExists(visited.back(), visited.front())) {
-                visited.push_back(visited.front());
                 way_length += graph.getEdgeCost(visited.back(), visited.front());
+                visited.push_back(visited.front());
             }
 
             evaporatePheromones(graph, pheromones);
@@ -91,13 +88,14 @@ namespace s21 {
         double sum = 0;
         for (auto way : possible_ways) {
             sum += std::pow(pheromones[current_pos][way - 1], constant::ALPHA) *
-                   std::pow(/* 1.0 / */ graph.getEdgeCost(current_pos + 1, way), constant::BETA);
+                   std::pow(1.0 / graph.getEdgeCost(current_pos + 1, way), constant::BETA);
         }
 
         std::vector<double> probabilities(possible_ways.size(), 0);
         for (size_t i = 0; i < possible_ways.size(); ++i) {
-            probabilities[i] = std::pow(pheromones[current_pos][possible_ways[i] - 1], constant::ALPHA) *
-                               std::pow(/* 1.0 / */ graph.getEdgeCost(current_pos + 1, possible_ways[i]), constant::BETA) /
+            probabilities[i] = 
+                               std::pow(pheromones[current_pos][possible_ways[i] - 1], constant::ALPHA) *
+                               std::pow(1.0 / graph.getEdgeCost(current_pos + 1, possible_ways[i]), constant::BETA) /
                                sum;
         }
 
