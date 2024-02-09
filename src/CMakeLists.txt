@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.5)
 project(SimpleNavigator LANGUAGES CXX)
 
 option(TESTING OFF)
+option(APPLICATION OFF)
 
-if (TESTING)
+if (APPLICATION)
+    add_subdirectory(console)
+elseif (TESTING)
     add_subdirectory(tests)
 else()
     add_subdirectory(graph)

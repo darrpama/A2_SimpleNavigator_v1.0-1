@@ -16,6 +16,10 @@ build:
 
 	./SimpleNavigator.exe
 
+install:
+	mkdir -p build && cd build && \
+	cmake ../ -DAPPLICATION=ON -DS21_GRAPH_ALGORITHMS=ON -G "Unix Makefiles" && make
+
 
 s21_graph.a:
 	mkdir -p build && cd build && \
