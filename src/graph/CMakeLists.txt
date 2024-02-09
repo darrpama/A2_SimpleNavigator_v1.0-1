@@ -7,6 +7,7 @@ option(S21_GRAPH_ALGORITHMS OFF)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+add_compile_options(-Wall -Werror -Wextra)
 
 set(${PROJECT_NAME}_SOURCES 
     s21_graph.cc

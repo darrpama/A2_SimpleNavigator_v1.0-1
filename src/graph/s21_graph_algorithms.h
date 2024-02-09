@@ -17,6 +17,9 @@ namespace s21 {
         static std::vector<std::vector<int>> GetLeastSpanningTree(const Graph& graph);
         
         static TravelingSalesman::TsmResult SolveTravelingSalesmanProblem(const Graph &graph);
+
+       private:
+        static void CheckVertex(const Graph& graph, int vertex, const std::string& msg);
     };
 } // namespace s21
 

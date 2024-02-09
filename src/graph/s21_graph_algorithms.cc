@@ -13,12 +13,8 @@
 
 namespace s21 {
     std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph &graph, int start_vertex) {
-        if (graph.size() == 0) {
-            return {};
-        }
-        if (start_vertex < 1 || start_vertex > graph.size()) {
-            throw std::invalid_argument("GraphAlgorithms::DepthFirstSearch(): Invalid start vertex");
-        }
+        if (graph.size() == 0) return {};
+        CheckVertex(graph, start_vertex, "GraphAlgorithms::DepthFirstSearch(): Invalid start vertex");
 
         std::vector<int> result;
         std::vector<bool> visited(graph.size(), false);
@@ -46,12 +42,8 @@ namespace s21 {
     }
     
     std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph &graph, int start_vertex) {
-        if (graph.size() == 0) {
-            return {};
-        }
-        if (start_vertex < 1 || start_vertex > graph.size()) {
-            throw std::invalid_argument("GraphAlgorithms::BreadthFirstSearch(): Invalid start vertex");
-        }
+        if (graph.size() == 0) return {};
+        CheckVertex(graph, start_vertex, "GraphAlgorithms::BreadthFirstSearch(): Invalid start vertex");
         
         std::vector<int> result;
         std::vector<bool> visited(graph.size(), false);
@@ -81,14 +73,10 @@ namespace s21 {
     }
     
     int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph &graph, int vertex1, int vertex2) {
-        if (graph.size() == 0)
-            return 0;
+        if (graph.size() == 0) return 0;
         
-        if (vertex1 < 1 || vertex1 > graph.size())
-            throw std::invalid_argument("GraphAlgorithms::GetShortestPathBetweenVertices(): Invalid vertex1.");
-        
-        if (vertex2 < 1 || vertex2 > graph.size())
-            throw std::invalid_argument("GraphAlgorithms::GetShortestPathBetweenVertices(): Invalid vertex2.");
+        CheckVertex(graph, vertex1, "GraphAlgorithms::GetShortestPathBetweenVertices(): Invalid vertex1.");
+        CheckVertex(graph, vertex2, "GraphAlgorithms::GetShortestPathBetweenVertices(): Invalid vertex2.");
         
         std::vector<int> dist(graph.size(), std::numeric_limits<int>::max());
         std::vector<bool> visited(graph.size(), false);
@@ -185,5 +173,11 @@ namespace s21 {
         AntColonyTSM tsm;
         
         return tsm.solve(graph);
+    }
+    
+    void GraphAlgorithms::CheckVertex(const Graph &graph, int vertex, const std::string& msg) {
+        if (!graph.IsVertexExist(vertex)) {
+            throw std::invalid_argument(msg);
+        }
     }
 } // namespace s21

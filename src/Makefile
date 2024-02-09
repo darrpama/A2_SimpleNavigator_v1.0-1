@@ -1,12 +1,15 @@
-CXX = g++ -g -std=c++17
 CXXFLAGS = -Wall -Werror -Wextra
 PROJECTDIR = $(CURDIR)
 TEST_EXE = GraphTests
 
+ifeq ($(shell uname), Darwin)
+	COMPILER21 = -DCMAKE_CXX_COMPILER="/usr/local/bin/g++"
+endif
+
 
 all: s21_graph.a s21_graph_algorithms.a tests clean
 
-
+# for dbg only
 build:
 	mkdir -p build && cd build && \
 	cmake ../ -DS21_GRAPH_ALGORITHMS=ON -G "Unix Makefiles" && make
@@ -26,7 +29,7 @@ s21_graph_algorithms.a:
 
 tests:
 	mkdir -p build && cd build && \
-	cmake ../ -DS21_GRAPH_ALGORITHMS=ON -DTESTING=ON -G "Unix Makefiles" && make
+	cmake ../ $(COMPILER21) -DS21_GRAPH_ALGORITHMS=ON -DTESTING=ON -G "Unix Makefiles" && make
 	./$(TEST_EXE)
 
 

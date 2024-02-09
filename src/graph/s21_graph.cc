@@ -14,8 +14,8 @@ namespace s21 {
         file >> size_;
         adj_matrix_ = std::vector<std::vector<int>>(size_, std::vector<int>(size_, 0));
 
-        for (int i = 0; i < size_; ++i) {
-            for (int j = 0; j < size_; ++j) {
+        for (size_t i = 0; i < size_; ++i) {
+            for (size_t j = 0; j < size_; ++j) {
                 file >> adj_matrix_[i][j];
             }
         }
@@ -24,8 +24,8 @@ namespace s21 {
     void Graph::ExportGraphToDot(const std::string &filename) const {
         std::stringstream ss;
         ss << "digraph G {\n";
-        for (int i = 0; i < size_; ++i) {
-            for (int j = 0; j < size_; ++j) {
+        for (size_t i = 0; i < size_; ++i) {
+            for (size_t j = 0; j < size_; ++j) {
                 if (adj_matrix_[i][j] >= 1) {
                     ss << "\t" << i << " -> " << j << ";\n";
                 }
@@ -41,6 +41,10 @@ namespace s21 {
         return adj_matrix_[from - 1][to - 1] != 0;
     }
 
+    bool Graph::IsVertexExist(const int vertex) const {
+        return vertex >= 1 || vertex <= static_cast<int>(size_);
+    }
+
     int Graph::getEdgeCost(const int from, const int to) const {
         return adj_matrix_[from - 1][to - 1];
     }
@@ -48,12 +52,12 @@ namespace s21 {
     std::vector<int> Graph::getNeighbors(const int vertex) const {
         if (size_ == 0) return {};
 
-        if (vertex < 1 || vertex > size_) {
+        if (!IsVertexExist(vertex)) {
             throw std::invalid_argument("Graph::getNeighbors(): Invalid vertex");
         }
 
         std::vector<int> neighbors;
-        for (int i = 0; i < size_; ++i) {
+        for (size_t i = 0; i < size_; ++i) {
             if (adj_matrix_[vertex - 1][i] >= 1) {
                 neighbors.push_back(i + 1);
             }
