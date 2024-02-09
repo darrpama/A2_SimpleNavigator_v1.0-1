@@ -1,8 +1,9 @@
 #include <stdexcept>
 #include <limits>
 #include <set>
-#include <stack> // replace
-#include <queue> // replace
+
+#include "../containers/stack.h"
+#include "../containers/queue.h"
 
 #include "TSM/AntColonyTSM.h"
 #include "s21_graph_algorithms.h"
@@ -15,7 +16,7 @@ namespace s21 {
         std::vector<int> result;
         std::vector<bool> visited(graph.size(), false);
 
-        std::stack<int> stack;
+        s21::stack<int> stack;
         stack.push(start_vertex);
         
         while (!stack.empty()) {
@@ -44,7 +45,7 @@ namespace s21 {
         std::vector<int> result;
         std::vector<bool> visited(graph.size(), false);
 
-        std::queue<int> queue;
+        s21::queue<int> queue;
         queue.push(start_vertex);
         result.push_back(start_vertex);
 
@@ -78,7 +79,7 @@ namespace s21 {
         std::vector<bool> visited(graph.size(), false);
         dist[vertex1 - 1] = 0;
 
-        std::queue<int> queue;
+        s21::queue<int> queue;
         queue.push(vertex1);
         
         while (!queue.empty()) {
