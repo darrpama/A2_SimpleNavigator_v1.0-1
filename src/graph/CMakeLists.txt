@@ -19,6 +19,8 @@ set(${PROJECT_NAME}_ALG_SOURCES
     s21_graph_algorithms.h
     TSM/AntColonyTSM.cc
     TSM/AntColonyTSM.h
+    ../containers/queue.h
+    ../containers/stack.h
 )
 
 if (S21_GRAPH OR S21_GRAPH_ALGORITHMS)
