@@ -1,7 +1,8 @@
-#include "s21_graph.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
+
+#include "s21_graph.h"
 
 namespace s21 {
     void Graph::LoadGraphFromFile(const std::string &filename) {

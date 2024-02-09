@@ -1,5 +1,3 @@
-#include "s21_graph_algorithms.h"
-
 #include <stdexcept>
 #include <limits>
 #include <set>
@@ -7,9 +5,7 @@
 #include <queue> // replace
 
 #include "TSM/AntColonyTSM.h"
-
-#include <iostream>
-#include <iomanip>
+#include "s21_graph_algorithms.h"
 
 namespace s21 {
     std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph &graph, int start_vertex) {
