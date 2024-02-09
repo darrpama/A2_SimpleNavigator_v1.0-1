@@ -126,11 +126,11 @@ namespace s21 {
         size_t erased = 0;
         for (auto it = visited.begin(); it != visited.end(); ++it) {
             if (std::binary_search(possible_ways.begin(), possible_ways.end(), *it)) {
-                possible_ways.erase(std::remove(possible_ways.begin(), possible_ways.end(), *it));
+                std::remove(possible_ways.begin(), possible_ways.end(), *it);
                 erased++;
             }
         }
 
-        // possible_ways.erase(possible_ways.end() - erased, possible_ways.end());
+        possible_ways.erase(possible_ways.end() - erased, possible_ways.end());
     }
 }
