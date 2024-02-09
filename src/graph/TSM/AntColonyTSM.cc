@@ -50,7 +50,7 @@ namespace s21 {
         TsmResult result;
 
         for (size_t ant = 0; ant < graph.size(); ++ant) {
-            size_t current_pos = 0;
+            size_t current_pos = ant;
             std::vector<int> visited;
             visited.push_back(current_pos + 1);
 

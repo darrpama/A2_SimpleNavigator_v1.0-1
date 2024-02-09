@@ -43,7 +43,7 @@ tests: $(GRAPH_STATICLIB) $(GRAPH_ALG_STATICLIB)
 
 
 clean:
-	rm -rf *.o */*.o
+	rm -rf *.o */*.o */*/*.o
 
 
 %.o: %.cc
