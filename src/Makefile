@@ -1,51 +1,35 @@
 CXX = g++ -g -std=c++17
 CXXFLAGS = -Wall -Werror -Wextra
 PROJECTDIR = $(CURDIR)
-GRAPH_STATICLIB = s21_graph.a
-GRAPH_SOURCES = $(PROJECTDIR)/graph/s21_graph.cc
-GRAPH_OBJECTS = $(GRAPH_SOURCES:.cc=.o)
-
-GRAPH_ALG_STATICLIB = s21_graph_algorithms.a
-GRAPH_ALG_SOURCES = \
-	$(PROJECTDIR)/graph/s21_graph_algorithms.cc \
-	$(PROJECTDIR)/graph/TSM/AntColonyTSM.cc \
-
-GRAPH_ALG_OBJECTS = $(GRAPH_ALG_SOURCES:.cc=.o)
-
-TEST_SOURCES = \
-	$(PROJECTDIR)/tests/main_tests.cc \
-	$(PROJECTDIR)/tests/graph_algorithms_tests.cc \
-	$(PROJECTDIR)/tests/graph_tests.cc \
-
 TEST_EXE = GraphTests
 
 
-all: $(GRAPH_STATICLIB) $(GRAPH_ALG_STATICLIB) tests clean
+all: s21_graph.a s21_graph_algorithms.a tests clean
 
 
 build:
-	mkdir -p build && cd build && cmake ../ -G "Unix Makefiles" && make
+	mkdir -p build && cd build && \
+	cmake ../ -DS21_GRAPH_ALGORITHMS=ON -G "Unix Makefiles" && make
 
 	./SimpleNavigator.exe
 
 
-$(GRAPH_STATICLIB): $(GRAPH_OBJECTS)
-	ar rcs $(GRAPH_STATICLIB) $^
+s21_graph.a:
+	mkdir -p build && cd build && \
+	cmake ../ -DS21_GRAPH=ON -G "Unix Makefiles" && make
 
 
-$(GRAPH_ALG_STATICLIB): $(GRAPH_ALG_OBJECTS) $(GRAPH_STATICLIB)
-	ar rcs $(GRAPH_ALG_STATICLIB) $^
+s21_graph_algorithms.a:
+	mkdir -p build && cd build && \
+	cmake ../ -DS21_GRAPH_ALGORITHMS=ON -G "Unix Makefiles" && make
 
 
-tests: $(GRAPH_STATICLIB) $(GRAPH_ALG_STATICLIB)
-	$(CXX) $(CXXFLAGS) $(TEST_SOURCES) $^ -lgtest -o $(TEST_EXE)
+tests:
+	mkdir -p build && cd build && \
+	cmake ../ -DS21_GRAPH_ALGORITHMS=ON -DTESTING=ON -G "Unix Makefiles" && make
 	./$(TEST_EXE)
 
 
 clean:
-	rm -rf *.o */*.o */*/*.o
-
-
-%.o: %.cc
-	$(CXX) -o $@ -c $<
+	rm -rf build *.a $(TEST_EXE)
 

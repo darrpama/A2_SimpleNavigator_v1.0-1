@@ -64,3 +64,21 @@ TEST(GraphAlgorithms, GetLeastSpanningTree_Prim) {
     EXPECT_TRUE((result[3] == std::vector<int>{ 0, 0, 2, 0, 0}));
     EXPECT_TRUE((result[4] == std::vector<int>{ 1, 0, 0, 0, 0}));
 }
+
+TEST(GraphAlgorithmsTSM, AntColony) {
+    std::string test_graph_path = (std::filesystem::current_path() / "assets" / "graph.txt").string();
+
+    s21::Graph graph;
+    graph.LoadGraphFromFile(test_graph_path);
+
+    auto result = s21::GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
+    
+    std::set<int> path;
+    for (int vertex : result.vertices) {
+        path.insert(vertex);
+    }
+
+    EXPECT_EQ(path.size(), graph.size());
+    EXPECT_EQ(result.vertices.size(), graph.size() + 1);
+    EXPECT_LT(result.distance, 260);
+}
