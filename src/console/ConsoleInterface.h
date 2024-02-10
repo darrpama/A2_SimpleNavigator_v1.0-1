@@ -7,6 +7,17 @@
 namespace s21 {
     class ConsoleInterface {
        public:
+        void run();
+
+        virtual void helloMsg() const;
+        virtual void menuMsg();
+        virtual void decisionOption();
+        virtual void byeMsg() const;
+
+       protected:
+        std::unique_ptr<Graph> graph_;
+    
+       private:
         enum class InterfaceOption {
             EXIT = -1,
             MENU = 0,
@@ -21,37 +32,23 @@ namespace s21 {
             TSM2 = 9,
             TSM3 = 10,
             TSM_RESEARCH = 11
-        };
-
-        void run();
-
-        virtual void helloMsg() const;
+        } option_;
         
-        virtual void menuMsg();
-        virtual void decisionOption();
-        
-        virtual void loadGraph();
-        virtual void exportGraph();
-        virtual void dfs();
-        virtual void bfs();
-        // virtual void dijkstra();
-        // virtual void floydWarshall();
-        // virtual void prim();
-        // virtual void antColony();
+        void loadGraph();
+        void exportGraph();
+        void dfs();
+        void bfs();
+        void dijkstra();
+        void floydWarshall();
+        void prim();
+        void antColony();
+        // void tsm2();
+        // void tsm3();
+        // void tsmResearch();
 
-        // virtual void tsm2();
-        // virtual void tsm3();
-        // virtual void tsmResearch();
-
-        virtual void byeMsg() const;
-
-       protected:
-        std::unique_ptr<Graph> graph_;
-        InterfaceOption option_;
-    
-       private:
         int readVertex();
-        void printWay(std::vector<int> &way);
+        void printWay(const std::vector<int> &way);
+        void printAdjacencyMatrix(const std::vector<std::vector<int>> &matrix);
         void wait();
     };
 } // namespace s21

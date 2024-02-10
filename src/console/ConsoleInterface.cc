@@ -3,6 +3,7 @@
 
 #include "../graph/s21_graph_algorithms.h"
 #include "ConsoleInterface.h"
+#include <iomanip>
 
 namespace s21 {
     void ConsoleInterface::run() {
@@ -82,15 +83,19 @@ namespace s21 {
                 break;
                 
             case InterfaceOption::DIJKSTRA:
+                dijkstra();
                 break;
                 
             case InterfaceOption::FLOYD_WARSHALL:
+                floydWarshall();
                 break;
                 
             case InterfaceOption::PRIM:
+                prim();
                 break;
                 
             case InterfaceOption::ANT_COLONY:
+                antColony();
                 break;
                 
             case InterfaceOption::TSM2:
@@ -102,6 +107,11 @@ namespace s21 {
             case InterfaceOption::TSM_RESEARCH:
                 break;
         }
+        option_ = InterfaceOption::MENU;
+    }
+
+    void ConsoleInterface::byeMsg() const {
+        std::cout << "Goodbye!" << std::endl;
     }
 
     void ConsoleInterface::loadGraph() {
@@ -112,7 +122,6 @@ namespace s21 {
         std::string path;
         std::cin >> path;
 
-        option_ = InterfaceOption::MENU;
         while (path != std::to_string(static_cast<int>(InterfaceOption::EXIT))) {
             try {
                 auto g = std::make_unique<Graph>();
@@ -120,6 +129,8 @@ namespace s21 {
                 std::cout << "[SUCCESS] Graph loaded successfully." << std::endl;
 
                 graph_ = std::move(g);
+                wait();
+                
                 return;
             } catch (std::exception &e) {
                 std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
@@ -129,6 +140,11 @@ namespace s21 {
         }
 
         std::cout << "You denied operation of loading graph." << std::endl;
+
+        if (graph_ == nullptr)
+            std::cout << "If not any graph loaded, you will be returned until any valid graph is loaded." << std::endl;
+
+        wait();
     }
 
     void ConsoleInterface::exportGraph() {
@@ -140,22 +156,20 @@ namespace s21 {
 
         try {
             graph_->ExportGraphToDot(path);
+            std::cout << "[SUCCESS] Graph exported successfully." << std::endl;
+
         } catch (std::exception &e) {
             std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
             std::cout << "[FAIL] Graph has not been exported." << std::endl;
-            return;
         }
-
-        std::cout << "[SUCCESS] Graph exported successfully." << std::endl;
-        option_ = InterfaceOption::MENU;
+        wait();
     }
 
     void ConsoleInterface::dfs() {
-        std::cout << "[DEPTH FIRST SEARCH]" << std::endl;
-        std::cout << "[START VERTEX] ";
+        std::cout << "\n[DEPTH FIRST SEARCH]" << std::endl;
 
+        std::cout << "[START VERTEX] ";
         int start_vertex = readVertex();
-        option_ = InterfaceOption::MENU;
         if (start_vertex == -1) return;
 
         try {
@@ -163,19 +177,19 @@ namespace s21 {
             std::cout << "[SUCCESS] Depth first search completed successfully." << std::endl;
             std::cout << "Way of depth first search:" << std::endl;
             printWay(way);
-            wait();
+
         } catch (std::exception &e) {
             std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
             std::cout << "[FAIL] Operation denied." << std::endl;
         }
+        wait();
     }
 
     void ConsoleInterface::bfs() {
-        std::cout << "[BREADTH FIRST SEARCH]" << std::endl;
-        std::cout << "[START VERTEX] ";
+        std::cout << "\n[BREADTH FIRST SEARCH]" << std::endl;
         
+        std::cout << "[START VERTEX] ";
         int start_vertex = readVertex();
-        option_ = InterfaceOption::MENU;
         if (start_vertex == -1) return;
 
         try {
@@ -183,15 +197,88 @@ namespace s21 {
             std::cout << "[SUCCESS] Breadth first search completed successfully." << std::endl;
             std::cout << "Way of breadth first search:" << std::endl;
             printWay(way);
-            wait();
+
         } catch (std::exception &e) {
             std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
             std::cout << "[FAIL] Operation denied." << std::endl;
         }
+        wait();
     }
 
-    void ConsoleInterface::byeMsg() const {
-        std::cout << "Goodbye!" << std::endl;
+    void ConsoleInterface::dijkstra() {
+        std::cout << "\n[DIJKSTRA'S ALGORITHM FOR FINDING SHORTEST PATH]" << std::endl;
+
+        std::cout << "[START VERTEX] ";
+        int start_vertex = readVertex();
+        if (start_vertex == -1) return;
+
+        std::cout << "[END VERTEX] ";
+        int end_vertex = readVertex();
+        if (end_vertex == -1) return;
+
+        try {
+            int cost = s21::GraphAlgorithms::GetShortestPathBetweenVertices(*graph_.get(), start_vertex, end_vertex);
+            std::cout << "[SUCCESS] Finding shortest path between vertices " << start_vertex << " and " << end_vertex << " completed successfully." << std::endl;
+            std::cout << "Shortest way will cost: " << cost << std::endl;
+
+        } catch (std::exception &e) {
+            std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
+            std::cout << "[FAIL] Operation denied." << std::endl;
+        }
+        wait();
+    }
+
+    void ConsoleInterface::floydWarshall() {
+        std::cout << "\n[FLOYD-WARSHALL ALGORITHM]" << std::endl;
+        std::cout << "[FOR FINDING SHORTEST PATH BETWEEN ALL VERTICES COMBINATIONS]" << std::endl;
+
+        try {
+            auto costs = s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(*graph_.get());
+            std::cout << "[SUCCESS] Finding shortest path between all vertices completed successfully." << std::endl;
+            std::cout << "Adjacency matrix of shortest ways: " << std::endl;
+            printAdjacencyMatrix(costs);
+
+        } catch (std::exception &e) {
+            std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
+            std::cout << "[FAIL] Operation denied." << std::endl;
+        }
+        wait();
+    }
+
+    void ConsoleInterface::prim() {
+        std::cout << "\n[PRIM'S ALGORITHM]" << std::endl;
+        std::cout << "[FOR FINDING MINIMAL SPANNING TREE IN THE GRAPH]" << std::endl;
+
+        try {
+            auto costs = s21::GraphAlgorithms::GetLeastSpanningTree(*graph_.get());
+            std::cout << "[SUCCESS] Finding minimal spanning tree completed successfully." << std::endl;
+            std::cout << "Adjacency matrix of spanning tree: " << std::endl;
+            printAdjacencyMatrix(costs);
+
+        } catch (std::exception &e) {
+            std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
+            std::cout << "[FAIL] Operation denied." << std::endl;
+        }
+        wait();
+    }
+
+    void ConsoleInterface::antColony() {
+        std::cout << "\n[ANT COLONY ALGORITHM]" << std::endl;
+        std::cout << "[FOR SOLVING TRAVELING SALESMAN PROBLEM]" << std::endl;
+
+
+        try {
+            auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblem(*graph_.get());
+            std::cout << "[SUCCESS] Solving TSM completed successfully." << std::endl;
+            std::cout << "Total TSM distance: " << tsm_result.distance << "." << std::endl;
+            std::cout << "Way of TSM: " << std::endl;
+            printWay(tsm_result.vertices);
+
+        } catch (std::exception &e) {
+            std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
+            std::cout << "[FAIL] Operation denied." << std::endl;
+        }
+        wait();
     }
     
     int ConsoleInterface::readVertex() {
@@ -211,20 +298,45 @@ namespace s21 {
         return start_vertex;
     }
     
-    void ConsoleInterface::printWay(std::vector<int> &way) {
+    void ConsoleInterface::printWay(const std::vector<int> &way) {
         for (size_t i = 0; i < graph_->size() - 1; i++) {
             std::cout << way[i] << " -> ";
         }
 
         std::cout << way.back() << std::endl;
     }
-    
+
+    void ConsoleInterface::printAdjacencyMatrix(const std::vector<std::vector<int>> &matrix) {
+        int width = std::to_string(matrix.size()).length() + 1;
+        std::cout << std::setw(width + 1) << "|";
+
+        for (size_t i = 0; i < matrix.size(); i++) {
+            std::cout << std::setw(width) << i + 1 << "|";
+        }
+        std::cout << std::endl;
+        
+        std::cout.fill('-');
+        for (size_t i = 0; i < matrix.size() + 1; i++) {
+                std::cout << std::setw(width + 1) << "|";
+        }
+        std::cout << std::endl;
+        std::cout.fill(' ');
+
+        for (size_t i = 0; i < matrix.size(); i++) {
+            std::cout << std::setw(width) << i + 1 << "|";
+            for (size_t j = 0; j < matrix[i].size(); j++) {
+                std::cout << std::setw(width) << matrix[i][j] << "|";   
+            }
+            std::cout << std::endl;
+        }
+    }
+
     void ConsoleInterface::wait() {
-        std::cout << "Press enter to continue..." << std::endl;
+        std::cout << "\nPress enter to continue..." << std::endl;
 
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        
+
         std::string line;
         std::getline(std::cin, line);
     }

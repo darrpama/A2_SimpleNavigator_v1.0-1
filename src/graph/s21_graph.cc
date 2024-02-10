@@ -43,7 +43,7 @@ namespace s21 {
     }
 
     bool Graph::IsVertexExist(const int vertex) const {
-        return vertex >= 1 || vertex <= static_cast<int>(size_);
+        return vertex >= 1 && vertex <= static_cast<int>(size_);
     }
 
     int Graph::getEdgeCost(const int from, const int to) const {
