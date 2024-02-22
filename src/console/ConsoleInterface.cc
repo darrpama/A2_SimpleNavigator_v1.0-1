@@ -21,6 +21,7 @@ namespace s21 {
     }
     
     void ConsoleInterface::helloMsg() const {
+        system("clear");
         std::cout << "Hello, this is a console interface of SimpleNavigator." << std::endl;
         std::cout << "The project about few graph algorithms." << std::endl;
         std::cout << "To use this program load graph from adjacency matrix and enter any number from menu." << std::endl;
@@ -28,6 +29,8 @@ namespace s21 {
     }
 
     void ConsoleInterface::menuMsg() {
+        system("clear");
+        std::cout << "[MENU]" << std::endl;
         std::cout << "\nAvailable options:" << std::endl;
         std::cout << "1. Load other graph." << std::endl;
         std::cout << "2. Export the graph to the DOT format." << std::endl;
@@ -67,34 +70,42 @@ namespace s21 {
                 return;
 
             case InterfaceOption::LOAD_GRAPH:
+                system("clear");
                 loadGraph();
                 break;
 
             case InterfaceOption::EXPORT_GRAPH:
+                system("clear");
                 exportGraph();
                 break;
 
             case InterfaceOption::DFS:
+                system("clear");
                 dfs();
                 break;
                 
             case InterfaceOption::BFS:
+                system("clear");
                 bfs();
                 break;
                 
             case InterfaceOption::DIJKSTRA:
+                system("clear");
                 dijkstra();
                 break;
                 
             case InterfaceOption::FLOYD_WARSHALL:
+                system("clear");
                 floydWarshall();
                 break;
                 
             case InterfaceOption::PRIM:
+                system("clear");
                 prim();
                 break;
                 
             case InterfaceOption::ANT_COLONY:
+                system("clear");
                 antColony();
                 break;
                 
@@ -126,6 +137,7 @@ namespace s21 {
             try {
                 auto g = std::make_unique<Graph>();
                 g->LoadGraphFromFile(path);
+                system("clear");
                 std::cout << "[SUCCESS] Graph loaded successfully." << std::endl;
 
                 graph_ = std::move(g);
@@ -148,6 +160,7 @@ namespace s21 {
     }
 
     void ConsoleInterface::exportGraph() {
+        system("clear");
         std::cout << "\n[EXPORTING GRAPH]" << std::endl;
         std::cout << "Please enter a path to file." << std::endl;
 
@@ -266,7 +279,6 @@ namespace s21 {
         std::cout << "\n[ANT COLONY ALGORITHM]" << std::endl;
         std::cout << "[FOR SOLVING TRAVELING SALESMAN PROBLEM]" << std::endl;
 
-
         try {
             auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblem(*graph_.get());
             std::cout << "[SUCCESS] Solving TSM completed successfully." << std::endl;
@@ -317,7 +329,7 @@ namespace s21 {
         
         std::cout.fill('-');
         for (size_t i = 0; i < matrix.size() + 1; i++) {
-                std::cout << std::setw(width + 1) << "|";
+            std::cout << std::setw(width + 1) << "|";
         }
         std::cout << std::endl;
         std::cout.fill(' ');
@@ -325,7 +337,11 @@ namespace s21 {
         for (size_t i = 0; i < matrix.size(); i++) {
             std::cout << std::setw(width) << i + 1 << "|";
             for (size_t j = 0; j < matrix[i].size(); j++) {
-                std::cout << std::setw(width) << matrix[i][j] << "|";   
+                if (matrix[i][j] > 0) {
+                    std::cout << std::setw(width) << matrix[i][j] << "|";
+                } else {
+                    std::cout << std::setw(width) << "." << "|";
+                }
             }
             std::cout << std::endl;
         }
