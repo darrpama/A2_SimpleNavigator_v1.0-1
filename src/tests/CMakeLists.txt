@@ -11,8 +11,6 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 add_definitions(-DGTEST_LANGUAGE_CXX17)
 
-add_subdirectory(../graph ${CMAKE_BINARY_DIR}/graph)
-
 set(TEST_SOURCES
     main_tests.cc
     graph_tests.cc
@@ -27,6 +25,3 @@ target_link_libraries(${PROJECT_NAME}
     ${GTEST_LIBRARIES}
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
-)

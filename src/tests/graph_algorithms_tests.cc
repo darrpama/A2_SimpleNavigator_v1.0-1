@@ -82,3 +82,21 @@ TEST(GraphAlgorithmsTSM, AntColony) {
     EXPECT_EQ(result.vertices.size(), graph.size() + 1);
     EXPECT_LT(result.distance, 260);
 }
+
+TEST(GraphAlgorithmsTSM, Genetic) {
+    std::string test_graph_path = (std::filesystem::current_path() / "assets" / "graph.txt").string();
+
+    s21::Graph graph;
+    graph.LoadGraphFromFile(test_graph_path);
+
+    auto result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(graph);
+    
+    std::set<int> path;
+    for (int vertex : result.vertices) {
+        path.insert(vertex);
+    }
+
+    EXPECT_EQ(path.size(), graph.size());
+    EXPECT_EQ(result.vertices.size(), graph.size());
+    EXPECT_LT(result.distance, 260);
+}

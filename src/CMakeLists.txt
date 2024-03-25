@@ -1,29 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 project(SimpleNavigator LANGUAGES CXX)
 
-option(TESTING OFF)
-option(APPLICATION OFF)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-if (APPLICATION)
-    add_subdirectory(console)
-elseif (TESTING)
-    add_subdirectory(tests)
-else()
-    add_subdirectory(graph)
-endif()
+add_subdirectory(console)
+add_subdirectory(tests)
+add_subdirectory(graph)
 
-
-# set(CMAKE_CXX_STANDARD 17)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# add_subdirectory(graph)
-# add_executable(${PROJECT_NAME} main.cc)
-
-# target_link_libraries(${PROJECT_NAME}
-#     s21_graph
-#     s21_graph_algorithms
-# )
-
-# set_target_properties(${PROJECT_NAME} PROPERTIES
-#     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
-# )

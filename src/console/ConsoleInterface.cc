@@ -113,6 +113,7 @@ namespace s21 {
                 break;
                 
             case InterfaceOption::GENETIC:
+                system("clear");
                 genetic();
                 break;
                 

@@ -9,10 +9,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_compile_options(-Wall -Werror -Wextra)
 
+
 set(${PROJECT_NAME}_SOURCES 
     s21_graph.cc
     s21_graph.h
 )
+
+add_library(${PROJECT_NAME} STATIC
+    ${${PROJECT_NAME}_SOURCES}
+)
+
+
+project(s21_graph_algorithms LANGUAGES CXX)
 
 set(${PROJECT_NAME}_ALG_SOURCES 
     s21_graph_algorithms.cc
@@ -24,25 +32,9 @@ set(${PROJECT_NAME}_ALG_SOURCES
     ../containers/queue.h
     ../containers/stack.h
 )
-
-if (S21_GRAPH OR S21_GRAPH_ALGORITHMS)
-    add_library(${PROJECT_NAME} STATIC
-        ${${PROJECT_NAME}_SOURCES}
-    )
-
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
-    )
-endif()
     
-if (S21_GRAPH_ALGORITHMS)
-    add_library(${PROJECT_NAME}_algorithms STATIC
-        ${${PROJECT_NAME}_ALG_SOURCES}
-        ${PROJECT_NAME}
-    )
-
-    set_target_properties(${PROJECT_NAME}_algorithms PROPERTIES
-        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
-    )
-endif()
-    
+add_library(${PROJECT_NAME} STATIC
+    ${${PROJECT_NAME}_ALG_SOURCES}
+    ${PROJECT_NAME}
+)
+   
