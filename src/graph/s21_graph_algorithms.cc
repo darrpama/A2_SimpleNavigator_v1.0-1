@@ -6,6 +6,8 @@
 #include "../containers/queue.h"
 
 #include "TSM/AntColonyTSM.h"
+#include "TSM/GeneticTSM.h"
+
 #include "s21_graph_algorithms.h"
 
 namespace s21 {
@@ -171,7 +173,13 @@ namespace s21 {
         
         return tsm.solve(graph);
     }
-    
+
+    TravelingSalesman::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(const Graph &graph) {
+        GeneticTSM tsm;
+
+        return tsm.solve(graph);
+    }
+
     void GraphAlgorithms::CheckVertex(const Graph &graph, int vertex, const std::string& msg) {
         if (!graph.IsVertexExist(vertex)) {
             throw std::invalid_argument(msg);

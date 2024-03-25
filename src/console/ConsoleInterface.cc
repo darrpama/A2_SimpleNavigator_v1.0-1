@@ -38,7 +38,7 @@ namespace s21 {
         std::cout << "7. Prim's algorithm for finding least spanning tree of graph." << std::endl;
         std::cout << "8. Ant-Colony algorithm for solving the Traveling Salesman Problem." << std::endl;
         std::cout << "9. <NAME> algorithm for solving the Traveling Salesman Problem." << std::endl;
-        std::cout << "10. <NAME> algorithm for solving the Traveling Salesman Problem." << std::endl;
+        std::cout << "10. Genetic algorithm for solving the Traveling Salesman Problem." << std::endl;
         std::cout << "11. Research between Traveling Salesman Problem solving algorithms." << std::endl;
 
         std::cout << "-1. Exit." << std::endl;
@@ -101,7 +101,8 @@ namespace s21 {
             case InterfaceOption::TSM2:
                 break;
                 
-            case InterfaceOption::TSM3:
+            case InterfaceOption::GENETIC:
+                genetic();
                 break;
                 
             case InterfaceOption::TSM_RESEARCH:
@@ -173,7 +174,7 @@ namespace s21 {
         if (start_vertex == -1) return;
 
         try {
-            auto way = s21::GraphAlgorithms::DepthFirstSearch(*graph_.get(), start_vertex);
+            auto way = s21::GraphAlgorithms::DepthFirstSearch(*graph_, start_vertex);
             std::cout << "[SUCCESS] Depth first search completed successfully." << std::endl;
             std::cout << "Way of depth first search:" << std::endl;
             printWay(way);
@@ -193,7 +194,7 @@ namespace s21 {
         if (start_vertex == -1) return;
 
         try {
-            auto way = s21::GraphAlgorithms::BreadthFirstSearch(*graph_.get(), start_vertex);
+            auto way = s21::GraphAlgorithms::BreadthFirstSearch(*graph_, start_vertex);
             std::cout << "[SUCCESS] Breadth first search completed successfully." << std::endl;
             std::cout << "Way of breadth first search:" << std::endl;
             printWay(way);
@@ -217,7 +218,7 @@ namespace s21 {
         if (end_vertex == -1) return;
 
         try {
-            int cost = s21::GraphAlgorithms::GetShortestPathBetweenVertices(*graph_.get(), start_vertex, end_vertex);
+            int cost = s21::GraphAlgorithms::GetShortestPathBetweenVertices(*graph_, start_vertex, end_vertex);
             std::cout << "[SUCCESS] Finding shortest path between vertices " << start_vertex << " and " << end_vertex << " completed successfully." << std::endl;
             std::cout << "Shortest way will cost: " << cost << std::endl;
 
@@ -233,7 +234,7 @@ namespace s21 {
         std::cout << "[FOR FINDING SHORTEST PATH BETWEEN ALL VERTICES COMBINATIONS]" << std::endl;
 
         try {
-            auto costs = s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(*graph_.get());
+            auto costs = s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(*graph_);
             std::cout << "[SUCCESS] Finding shortest path between all vertices completed successfully." << std::endl;
             std::cout << "Adjacency matrix of shortest ways: " << std::endl;
             printAdjacencyMatrix(costs);
@@ -250,7 +251,7 @@ namespace s21 {
         std::cout << "[FOR FINDING MINIMAL SPANNING TREE IN THE GRAPH]" << std::endl;
 
         try {
-            auto costs = s21::GraphAlgorithms::GetLeastSpanningTree(*graph_.get());
+            auto costs = s21::GraphAlgorithms::GetLeastSpanningTree(*graph_);
             std::cout << "[SUCCESS] Finding minimal spanning tree completed successfully." << std::endl;
             std::cout << "Adjacency matrix of spanning tree: " << std::endl;
             printAdjacencyMatrix(costs);
@@ -266,9 +267,8 @@ namespace s21 {
         std::cout << "\n[ANT COLONY ALGORITHM]" << std::endl;
         std::cout << "[FOR SOLVING TRAVELING SALESMAN PROBLEM]" << std::endl;
 
-
         try {
-            auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblem(*graph_.get());
+            auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblem(*graph_);
             std::cout << "[SUCCESS] Solving TSM completed successfully." << std::endl;
             std::cout << "Total TSM distance: " << tsm_result.distance << "." << std::endl;
             std::cout << "Way of TSM: " << std::endl;
@@ -280,7 +280,25 @@ namespace s21 {
         }
         wait();
     }
-    
+
+    void ConsoleInterface::genetic() {
+        std::cout << "\n[GENETIC ALGORITHM]" << std::endl;
+        std::cout << "[FOR SOLVING TRAVELING SALESMAN PROBLEM]" << std::endl;
+
+        try {
+            auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(*graph_);
+            std::cout << "[SUCCESS] Solving TSM completed successfully." << std::endl;
+            std::cout << "Total TSM distance: " << tsm_result.distance << "." << std::endl;
+            std::cout << "Way of TSM: " << std::endl;
+            printWay(tsm_result.vertices);
+
+        } catch (std::exception &e) {
+            std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
+            std::cout << "[FAIL] Operation denied." << std::endl;
+        }
+        wait();
+    }
+
     int ConsoleInterface::readVertex() {
         std::cout << "Please enter a vertex." << std::endl;
 

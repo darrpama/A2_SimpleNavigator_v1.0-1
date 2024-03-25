@@ -30,7 +30,7 @@ namespace s21 {
             PRIM = 7,
             ANT_COLONY = 8,
             TSM2 = 9,
-            TSM3 = 10,
+            GENETIC = 10,
             TSM_RESEARCH = 11
         } option_;
         
@@ -43,7 +43,7 @@ namespace s21 {
         void prim();
         void antColony();
         // void tsm2();
-        // void tsm3();
+        void genetic();
         // void tsmResearch();
 
         int readVertex();
