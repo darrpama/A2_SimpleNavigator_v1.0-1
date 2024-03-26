@@ -29,7 +29,7 @@ namespace s21 {
             FLOYD_WARSHALL = 6,
             PRIM = 7,
             ANT_COLONY = 8,
-            TSM2 = 9,
+            BRANCHES_AND_BOUNDS = 9,
             GENETIC = 10,
             TSM_RESEARCH = 11
         } option_;
@@ -42,9 +42,9 @@ namespace s21 {
         void floydWarshall();
         void prim();
         void antColony();
-        // void tsm2();
+        void branchesAndBounds();
         void genetic();
-        // void tsmResearch();
+        void tsmResearch();
 
         int readVertex();
         void printWay(const std::vector<int> &way);

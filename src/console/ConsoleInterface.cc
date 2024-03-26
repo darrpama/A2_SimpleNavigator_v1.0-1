@@ -1,9 +1,11 @@
 #include <limits>
+#include <chrono>
 #include <iostream>
+#include <iomanip>
+#include <future>
 
 #include "../graph/s21_graph_algorithms.h"
 #include "ConsoleInterface.h"
-#include <iomanip>
 
 namespace s21 {
     void ConsoleInterface::run() {
@@ -40,7 +42,7 @@ namespace s21 {
         std::cout << "6. Floyd-Warshall algorithm for finding shortest paths between all combinations." << std::endl;
         std::cout << "7. Prim's algorithm for finding least spanning tree of graph." << std::endl;
         std::cout << "8. Ant-Colony algorithm for solving the Traveling Salesman Problem." << std::endl;
-        std::cout << "9. <NAME> algorithm for solving the Traveling Salesman Problem." << std::endl;
+        std::cout << "9. Branches And Bounds algorithm for solving the Traveling Salesman Problem." << std::endl;
         std::cout << "10. Genetic algorithm for solving the Traveling Salesman Problem." << std::endl;
         std::cout << "11. Research between Traveling Salesman Problem solving algorithms." << std::endl;
 
@@ -109,7 +111,9 @@ namespace s21 {
                 antColony();
                 break;
                 
-            case InterfaceOption::TSM2:
+            case InterfaceOption::BRANCHES_AND_BOUNDS:
+                system("clear");
+                branchesAndBounds();
                 break;
                 
             case InterfaceOption::GENETIC:
@@ -118,6 +122,8 @@ namespace s21 {
                 break;
                 
             case InterfaceOption::TSM_RESEARCH:
+                system("clear");
+                tsmResearch();
                 break;
         }
         option_ = InterfaceOption::MENU;
@@ -295,6 +301,24 @@ namespace s21 {
         wait();
     }
 
+    void ConsoleInterface::branchesAndBounds() {
+        std::cout << "\n[BRANCHES AND BOUNDS ALGORITHM]" << std::endl;
+        std::cout << "[FOR SOLVING TRAVELING SALESMAN PROBLEM]" << std::endl;
+
+        try {
+            auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemBranchesAndBounds(*graph_);
+            std::cout << "[SUCCESS] Solving TSM completed successfully." << std::endl;
+            std::cout << "Total TSM distance: " << tsm_result.distance << "." << std::endl;
+            std::cout << "Way of TSM: " << std::endl;
+            printWay(tsm_result.vertices);
+
+        } catch (std::exception &e) {
+            std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
+            std::cout << "[FAIL] Operation denied." << std::endl;
+        }
+        wait();
+    }
+
     void ConsoleInterface::genetic() {
         std::cout << "\n[GENETIC ALGORITHM]" << std::endl;
         std::cout << "[FOR SOLVING TRAVELING SALESMAN PROBLEM]" << std::endl;
@@ -305,6 +329,74 @@ namespace s21 {
             std::cout << "Total TSM distance: " << tsm_result.distance << "." << std::endl;
             std::cout << "Way of TSM: " << std::endl;
             printWay(tsm_result.vertices);
+
+        } catch (std::exception &e) {
+            std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
+            std::cout << "[FAIL] Operation denied." << std::endl;
+        }
+        wait();
+    }
+
+    void ConsoleInterface::tsmResearch() {
+        std::cout << "\n[RESEARCH BETWEEN TRAVELING SALESMAN PROBLEM ALGORITHMS]" << std::endl;
+        std::cout << "[THERE ARE THREE DIFFERENT ALGORITHMS FOR SOLVING TRAVELING SALESMAN PROBLEM]" << std::endl;
+        std::cout << "[ANT COLONY, GENETIC ALGORITHM AND BRANCHES AND BOUNDS]" << std::endl;
+        std::cout << "[THE PURPOSE OF RESEARCH IS TO COMPARE THE SPEED OF EXECUTION OF THESE ALGORITHMS]" << std::endl;
+        std::cout << "[PLEASE, ENTER THE NUMBER OF ITERATIONS]" << std::endl;
+
+        try {
+            size_t N;
+            std::cin >> N;
+            while (true) {
+                if (std::cin.fail()) {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "[FAIL] Invalid input. Try again" << std::endl;
+
+                    continue;
+                }
+
+                break;
+            }
+
+            auto ants_ft = std::async([N, this]() {
+                auto start = std::chrono::high_resolution_clock().now().time_since_epoch();
+                for (size_t i = 0; i < N; i++) {
+                    auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblem(*graph_);
+                }
+                auto end = std::chrono::high_resolution_clock().now().time_since_epoch();
+
+                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000;
+            });
+
+            auto genetic_ft = std::async([N, this]() {
+                auto start = std::chrono::high_resolution_clock().now().time_since_epoch();
+                for (size_t i = 0; i < N; i++) {
+                    auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(*graph_);
+                }
+                auto end = std::chrono::high_resolution_clock().now().time_since_epoch();
+
+                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000;
+            });
+
+            auto bnb_ft = std::async([N, this]() {
+                auto start = std::chrono::high_resolution_clock().now().time_since_epoch();
+                for (size_t i = 0; i < N; i++) {
+                    auto tsm_result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemBranchesAndBounds(*graph_);
+                }
+                auto end = std::chrono::high_resolution_clock().now().time_since_epoch();
+
+                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000;
+            });
+
+            std::cout << "Total time taken by ant colony algorithm: "
+                      << ants_ft.get() << " seconds." << std::endl;
+
+            std::cout << "Total time taken by genetic algorithm: "
+                      << genetic_ft.get() << " seconds." << std::endl;
+  
+            std::cout << "Total time taken by branches and bounds algorithm: "
+                      << bnb_ft.get() << " seconds." << std::endl;
 
         } catch (std::exception &e) {
             std::cout << "[FAIL] An error occured: " << e.what() << std::endl;
