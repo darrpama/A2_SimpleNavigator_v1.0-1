@@ -46,6 +46,8 @@ TravelingSalesman::TsmResult GeneticTSM::solve(const Graph &graph) {
         population = new_population;
     }
 
+    best_tsm.vertices.push_back(best_tsm.vertices.front());
+
     return best_tsm;
 }
 

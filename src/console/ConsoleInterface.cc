@@ -423,7 +423,7 @@ namespace s21 {
     }
     
     void ConsoleInterface::printWay(const std::vector<int> &way) {
-        for (size_t i = 0; i < graph_->size() - 1; i++) {
+        for (size_t i = 0; i < way.size() - 1; i++) {
             std::cout << way[i] << " -> ";
         }
 

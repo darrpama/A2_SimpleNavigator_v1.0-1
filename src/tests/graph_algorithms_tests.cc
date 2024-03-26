@@ -97,7 +97,7 @@ TEST(GraphAlgorithmsTSM, Genetic) {
     }
 
     EXPECT_EQ(path.size(), graph.size());
-    EXPECT_EQ(result.vertices.size(), graph.size());
+    EXPECT_EQ(result.vertices.size(), graph.size() + 1);
     EXPECT_LT(result.distance, 260);
 }
 
@@ -115,7 +115,7 @@ TEST(GraphAlgorithmsTSM, BranchesAndBounds_First) {
     }
 
     EXPECT_EQ(path.size(), graph.size());
-    EXPECT_EQ(result.vertices.size(), graph.size());
+    EXPECT_EQ(result.vertices.size(), graph.size() + 1);
     EXPECT_EQ(result.distance, 28);
 }
 
@@ -133,6 +133,6 @@ TEST(GraphAlgorithmsTSM, BranchesAndBounds_Second) {
     }
 
     EXPECT_EQ(path.size(), graph.size());
-    EXPECT_EQ(result.vertices.size(), graph.size());
+    EXPECT_EQ(result.vertices.size(), graph.size() + 1);
     EXPECT_EQ(result.distance, 253);
 }
