@@ -7,6 +7,7 @@
 
 #include "TSM/AntColonyTSM.h"
 #include "TSM/GeneticTSM.h"
+#include "TSM/BranchesAndBoundsTSM.h"
 
 #include "s21_graph_algorithms.h"
 
@@ -176,6 +177,12 @@ namespace s21 {
 
     TravelingSalesman::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(const Graph &graph) {
         GeneticTSM tsm;
+
+        return tsm.solve(graph);
+    }
+
+    TravelingSalesman::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblemBranchesAndBounds(const Graph &graph) {
+        BranchesAndBoundsTSM tsm;
 
         return tsm.solve(graph);
     }

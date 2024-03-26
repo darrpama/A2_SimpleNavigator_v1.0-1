@@ -70,4 +70,8 @@ namespace s21 {
     size_t Graph::size() const {
         return size_;
     }
+    
+    std::vector<std::vector<int>> Graph::getAdjMatrix() const {
+        return adj_matrix_;
+    }
 }

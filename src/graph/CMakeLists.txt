@@ -29,6 +29,8 @@ set(${PROJECT_NAME}_ALG_SOURCES
     TSM/AntColonyTSM.h
     TSM/GeneticTSM.cc
     TSM/GeneticTSM.h
+    TSM/BranchesAndBoundsTSM.cc
+    TSM/BranchesAndBoundsTSM.h
     ../containers/queue.h
     ../containers/stack.h
 )

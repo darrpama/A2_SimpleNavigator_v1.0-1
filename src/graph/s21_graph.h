@@ -15,6 +15,8 @@ namespace s21 {
         int getEdgeCost(const int from, const int to) const;
         std::vector<int> getNeighbors(const int vertex) const;
         size_t size() const;
+
+        std::vector<std::vector<int>> getAdjMatrix() const;
         
        private:
         std::vector<std::vector<int>> adj_matrix_;
