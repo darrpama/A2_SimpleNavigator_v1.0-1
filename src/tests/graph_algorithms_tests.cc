@@ -107,7 +107,7 @@ TEST(GraphAlgorithmsTSM, BranchesAndBounds_First) {
     s21::Graph graph;
     graph.LoadGraphFromFile(test_graph_path);
 
-    auto result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(graph);
+    auto result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemBranchesAndBounds(graph);
     
     std::set<int> path;
     for (int vertex : result.vertices) {
@@ -125,7 +125,7 @@ TEST(GraphAlgorithmsTSM, BranchesAndBounds_Second) {
     s21::Graph graph;
     graph.LoadGraphFromFile(test_graph_path);
 
-    auto result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(graph);
+    auto result = s21::GraphAlgorithms::SolveTravelingSalesmanProblemBranchesAndBounds(graph);
     
     std::set<int> path;
     for (int vertex : result.vertices) {

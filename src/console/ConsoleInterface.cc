@@ -346,8 +346,9 @@ namespace s21 {
 
         try {
             size_t N;
-            std::cin >> N;
             while (true) {
+                std::cin >> N;
+                
                 if (std::cin.fail()) {
                     std::cin.clear();
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -366,7 +367,7 @@ namespace s21 {
                 }
                 auto end = std::chrono::high_resolution_clock().now().time_since_epoch();
 
-                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000;
+                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0;
             });
 
             auto genetic_ft = std::async([N, this]() {
@@ -376,7 +377,7 @@ namespace s21 {
                 }
                 auto end = std::chrono::high_resolution_clock().now().time_since_epoch();
 
-                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000;
+                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0;
             });
 
             auto bnb_ft = std::async([N, this]() {
@@ -386,7 +387,7 @@ namespace s21 {
                 }
                 auto end = std::chrono::high_resolution_clock().now().time_since_epoch();
 
-                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000;
+                return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0;
             });
 
             std::cout << "Total time taken by ant colony algorithm: "
