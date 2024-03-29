@@ -28,7 +28,7 @@ s21_graph_algorithms.a:
 
 
 tests:
-	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake . -G "Unix Makefiles" $(COMPILER21) -B $(BUILDDIR) && \
 	cmake --build $(BUILDDIR) --target GraphTests --config=Release
 	./$(TEST_EXE)
 
