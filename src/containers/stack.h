@@ -4,31 +4,22 @@
 #include <deque>
 
 namespace s21 {
-    template<typename T, typename Container = std::deque<T>>
-    class stack {
-       public:
-        stack() {}
-        
-        void push(T value) {
-            cont_.push_front(value);
-        }
+template <typename T, typename Container = std::deque<T>>
+class stack {
+ public:
+  stack() {}
 
-        void pop() {
-            cont_.pop_front();
-        }
+  void push(T value) { cont_.push_front(value); }
 
-        T top() {
-            return cont_.front();
-        }
+  void pop() { cont_.pop_front(); }
 
-        bool empty() {
-            return cont_.empty();
-        }
-    
-       private:
-        Container cont_;
-    };
-} // namespace s21
+  T top() { return cont_.front(); }
 
+  bool empty() { return cont_.empty(); }
+
+ private:
+  Container cont_;
+};
+}  // namespace s21
 
 #endif  // _S21STACK_H_

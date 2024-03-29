@@ -1,195 +1,211 @@
-#include <stdexcept>
-#include <limits>
-#include <set>
-
-#include "../containers/stack.h"
-#include "../containers/queue.h"
-
-#include "TSM/AntColonyTSM.h"
-#include "TSM/GeneticTSM.h"
-#include "TSM/BranchesAndBoundsTSM.h"
-
 #include "s21_graph_algorithms.h"
 
+#include <limits>
+#include <set>
+#include <stdexcept>
+
+#include "../containers/queue.h"
+#include "../containers/stack.h"
+#include "TSM/AntColonyTSM.h"
+#include "TSM/BranchesAndBoundsTSM.h"
+#include "TSM/GeneticTSM.h"
+
 namespace s21 {
-    std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph &graph, int start_vertex) {
-        if (graph.size() == 0) return {};
-        CheckVertex(graph, start_vertex, "GraphAlgorithms::DepthFirstSearch(): Invalid start vertex");
+std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph &graph,
+                                                   int start_vertex) {
+  if (graph.size() == 0) return {};
+  CheckVertex(graph, start_vertex,
+              "GraphAlgorithms::DepthFirstSearch(): Invalid start vertex");
 
-        std::vector<int> result;
-        std::vector<bool> visited(graph.size(), false);
+  std::vector<int> result;
+  std::vector<bool> visited(graph.size(), false);
 
-        s21::stack<int> stack;
-        stack.push(start_vertex);
-        
-        while (!stack.empty()) {
-            int top = stack.top() - 1;
-            stack.pop();
+  s21::stack<int> stack;
+  stack.push(start_vertex);
 
-            if (!visited[top]) {
-                result.push_back(top + 1);
-                visited[top] = true;
-                
-                auto nb = graph.getNeighbors(top + 1);
-                for (int i = static_cast<int>(nb.size()) - 1; i >= 0; i--) {
-                    if (!visited[nb[i] - 1])
-                        stack.push(nb[i]);
-                }
-            }
-        }
+  while (!stack.empty()) {
+    int top = stack.top() - 1;
+    stack.pop();
 
-        return result;
+    if (!visited[top]) {
+      result.push_back(top + 1);
+      visited[top] = true;
+
+      auto nb = graph.getNeighbors(top + 1);
+      for (int i = static_cast<int>(nb.size()) - 1; i >= 0; i--) {
+        if (!visited[nb[i] - 1]) stack.push(nb[i]);
+      }
     }
-    
-    std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph &graph, int start_vertex) {
-        if (graph.size() == 0) return {};
-        CheckVertex(graph, start_vertex, "GraphAlgorithms::BreadthFirstSearch(): Invalid start vertex");
-        
-        std::vector<int> result;
-        std::vector<bool> visited(graph.size(), false);
+  }
 
-        s21::queue<int> queue;
-        queue.push(start_vertex);
-        result.push_back(start_vertex);
+  return result;
+}
 
-        while (!queue.empty()) {
-            int front = queue.front() - 1;
-            queue.pop();
+std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph &graph,
+                                                     int start_vertex) {
+  if (graph.size() == 0) return {};
+  CheckVertex(graph, start_vertex,
+              "GraphAlgorithms::BreadthFirstSearch(): Invalid start vertex");
 
-            visited[front] = true;
-            auto nb = graph.getNeighbors(front + 1);
+  std::vector<int> result;
+  std::vector<bool> visited(graph.size(), false);
 
-            for (int i = 0; i < static_cast<int>(nb.size()); i++) {
-                if (!visited[nb[i] - 1]) {
-                    queue.push(nb[i]);
-                    visited[nb[i] - 1] = true;
+  s21::queue<int> queue;
+  queue.push(start_vertex);
+  result.push_back(start_vertex);
 
-                    result.push_back(nb[i]);
-                }
-            }
-        }
-        
-        return result;
+  while (!queue.empty()) {
+    int front = queue.front() - 1;
+    queue.pop();
+
+    visited[front] = true;
+    auto nb = graph.getNeighbors(front + 1);
+
+    for (int i = 0; i < static_cast<int>(nb.size()); i++) {
+      if (!visited[nb[i] - 1]) {
+        queue.push(nb[i]);
+        visited[nb[i] - 1] = true;
+
+        result.push_back(nb[i]);
+      }
     }
-    
-    int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph &graph, int vertex1, int vertex2) {
-        if (graph.size() == 0) return 0;
-        
-        CheckVertex(graph, vertex1, "GraphAlgorithms::GetShortestPathBetweenVertices(): Invalid vertex1.");
-        CheckVertex(graph, vertex2, "GraphAlgorithms::GetShortestPathBetweenVertices(): Invalid vertex2.");
-        
-        std::vector<int> dist(graph.size(), std::numeric_limits<int>::max());
-        std::vector<bool> visited(graph.size(), false);
-        dist[vertex1 - 1] = 0;
+  }
 
-        s21::queue<int> queue;
-        queue.push(vertex1);
-        
-        while (!queue.empty()) {
-            int front = queue.front() - 1;
-            queue.pop();
+  return result;
+}
 
-            visited[front] = true;
-            auto nb = graph.getNeighbors(front + 1);
+int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph &graph,
+                                                    int vertex1, int vertex2) {
+  if (graph.size() == 0) return 0;
 
-            for (int i = 0; i < static_cast<int>(nb.size()); i++) {
-                if (!visited[nb[i] - 1]) {
-                    queue.push(nb[i]);
-                    visited[nb[i] - 1] = true;
-                }
-                dist[nb[i] - 1] = std::min(dist[front] + graph.getEdgeCost(front + 1, nb[i]), dist[nb[i] - 1]);
-            }
-        }
+  CheckVertex(
+      graph, vertex1,
+      "GraphAlgorithms::GetShortestPathBetweenVertices(): Invalid vertex1.");
+  CheckVertex(
+      graph, vertex2,
+      "GraphAlgorithms::GetShortestPathBetweenVertices(): Invalid vertex2.");
 
-        return dist[vertex2 - 1];
+  std::vector<int> dist(graph.size(), std::numeric_limits<int>::max());
+  std::vector<bool> visited(graph.size(), false);
+  dist[vertex1 - 1] = 0;
+
+  s21::queue<int> queue;
+  queue.push(vertex1);
+
+  while (!queue.empty()) {
+    int front = queue.front() - 1;
+    queue.pop();
+
+    visited[front] = true;
+    auto nb = graph.getNeighbors(front + 1);
+
+    for (int i = 0; i < static_cast<int>(nb.size()); i++) {
+      if (!visited[nb[i] - 1]) {
+        queue.push(nb[i]);
+        visited[nb[i] - 1] = true;
+      }
+      dist[nb[i] - 1] = std::min(
+          dist[front] + graph.getEdgeCost(front + 1, nb[i]), dist[nb[i] - 1]);
     }
-    
-    std::vector<std::vector<int>> GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph &graph) {
-        std::vector<std::vector<int>> dist(graph.size(), std::vector<int>(graph.size(), 0));
+  }
 
-        for (size_t u = 0; u < graph.size(); u++) {
-            for (size_t v = 0; v < graph.size(); v++) {
-                int cost = graph.getEdgeCost(u + 1, v + 1);
-                dist[u][v] = cost == 0 ? 1e9 : cost;
-            }
-        }
+  return dist[vertex2 - 1];
+}
 
-        for (size_t v = 0; v < graph.size(); v++) {
-            dist[v][v] = graph.getEdgeCost(v + 1, v + 1);
-        }
+std::vector<std::vector<int>>
+GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph &graph) {
+  std::vector<std::vector<int>> dist(graph.size(),
+                                     std::vector<int>(graph.size(), 0));
 
-        for (size_t k = 0; k < graph.size(); k++) {
-            for (size_t i = 0; i < graph.size(); i++) {
-                for (size_t j = 0; j < graph.size(); j++) {
-                    dist[i][j] = std::min(dist[i][j], dist[i][k] + dist[k][j]);
-                }
-            }
-        }
-
-        return dist;
+  for (size_t u = 0; u < graph.size(); u++) {
+    for (size_t v = 0; v < graph.size(); v++) {
+      int cost = graph.getEdgeCost(u + 1, v + 1);
+      dist[u][v] = cost == 0 ? 1e9 : cost;
     }
-    
-    std::vector<std::vector<int>> GraphAlgorithms::GetLeastSpanningTree(const Graph &graph) {
-        std::vector<std::vector<int>> forest(graph.size(), std::vector<int>(graph.size(), 0));
-        
-        std::vector<int> parent(graph.size(), -1);
-        std::vector<int> cheapest(graph.size(), 1e9);
-        cheapest[0] = 0;
+  }
 
-        std::set<std::pair<int, int>> edges;
-        edges.insert({0, 0});
+  for (size_t v = 0; v < graph.size(); v++) {
+    dist[v][v] = graph.getEdgeCost(v + 1, v + 1);
+  }
 
-        for (size_t k = 0; k < graph.size(); k++) {
-            if (edges.empty())
-                return {};
-
-            int cost = edges.begin()->first;
-            int v = edges.begin()->second;
-            edges.erase(edges.begin());
-
-            if (parent[v] != -1) {
-                forest[parent[v]][v] = cost;
-                forest[v][parent[v]] = cost;
-            }
-
-            auto nb = graph.getNeighbors(v + 1);
-            for (int i = 0; i < static_cast<int>(nb.size()); i++) {
-                int to = nb[i] - 1;
-                cost = graph.getEdgeCost(v + 1, to + 1);
-
-                if (cost < cheapest[to]) {
-                    edges.erase({cheapest[to], to});
-                    cheapest[to] = cost;
-                    parent[to] = v;
-                    edges.insert({cheapest[to], to});
-                }
-            }
-        }
-
-        return forest;
+  for (size_t k = 0; k < graph.size(); k++) {
+    for (size_t i = 0; i < graph.size(); i++) {
+      for (size_t j = 0; j < graph.size(); j++) {
+        dist[i][j] = std::min(dist[i][j], dist[i][k] + dist[k][j]);
+      }
     }
-    
-    TravelingSalesman::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(const Graph &graph) {
-        AntColonyTSM tsm;
-        
-        return tsm.solve(graph);
+  }
+
+  return dist;
+}
+
+std::vector<std::vector<int>> GraphAlgorithms::GetLeastSpanningTree(
+    const Graph &graph) {
+  std::vector<std::vector<int>> forest(graph.size(),
+                                       std::vector<int>(graph.size(), 0));
+
+  std::vector<int> parent(graph.size(), -1);
+  std::vector<int> cheapest(graph.size(), 1e9);
+  cheapest[0] = 0;
+
+  std::set<std::pair<int, int>> edges;
+  edges.insert({0, 0});
+
+  for (size_t k = 0; k < graph.size(); k++) {
+    if (edges.empty()) return {};
+
+    int cost = edges.begin()->first;
+    int v = edges.begin()->second;
+    edges.erase(edges.begin());
+
+    if (parent[v] != -1) {
+      forest[parent[v]][v] = cost;
+      forest[v][parent[v]] = cost;
     }
 
-    TravelingSalesman::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(const Graph &graph) {
-        GeneticTSM tsm;
+    auto nb = graph.getNeighbors(v + 1);
+    for (int i = 0; i < static_cast<int>(nb.size()); i++) {
+      int to = nb[i] - 1;
+      cost = graph.getEdgeCost(v + 1, to + 1);
 
-        return tsm.solve(graph);
+      if (cost < cheapest[to]) {
+        edges.erase({cheapest[to], to});
+        cheapest[to] = cost;
+        parent[to] = v;
+        edges.insert({cheapest[to], to});
+      }
     }
+  }
 
-    TravelingSalesman::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblemBranchesAndBounds(const Graph &graph) {
-        BranchesAndBoundsTSM tsm;
+  return forest;
+}
 
-        return tsm.solve(graph);
-    }
+TravelingSalesman::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
+    const Graph &graph) {
+  AntColonyTSM tsm;
 
-    void GraphAlgorithms::CheckVertex(const Graph &graph, int vertex, const std::string& msg) {
-        if (!graph.IsVertexExist(vertex)) {
-            throw std::invalid_argument(msg);
-        }
-    }
-} // namespace s21
+  return tsm.solve(graph);
+}
+
+TravelingSalesman::TsmResult
+GraphAlgorithms::SolveTravelingSalesmanProblemGenetic(const Graph &graph) {
+  GeneticTSM tsm;
+
+  return tsm.solve(graph);
+}
+
+TravelingSalesman::TsmResult
+GraphAlgorithms::SolveTravelingSalesmanProblemBranchesAndBounds(
+    const Graph &graph) {
+  BranchesAndBoundsTSM tsm;
+
+  return tsm.solve(graph);
+}
+
+void GraphAlgorithms::CheckVertex(const Graph &graph, int vertex,
+                                  const std::string &msg) {
+  if (!graph.IsVertexExist(vertex)) {
+    throw std::invalid_argument(msg);
+  }
+}
+}  // namespace s21
